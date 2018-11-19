@@ -1,4 +1,9 @@
+/**
+ * Created by kuba on 14/11/2018
+ */
+
 package WebCrawlerApp.viewController;
+
 
 import WebCrawlerApp.Main;
 import WebCrawlerApp.model.Search;
@@ -9,6 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -17,6 +24,8 @@ public class AppController {
 
     private Stage primaryStage;
     private ObservableList<Search> searches;
+
+
 
     public AppController(Stage primaryStage) {
         this.primaryStage = primaryStage;

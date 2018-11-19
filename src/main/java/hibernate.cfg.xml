@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration SYSTEM
-        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-<hibernate-configuration>
-    <session-factory>
-        <property name="connection.url">jdbc:sqlite:mydb.sqlite</property>
-
-    </session-factory>
-</hibernate-configuration>

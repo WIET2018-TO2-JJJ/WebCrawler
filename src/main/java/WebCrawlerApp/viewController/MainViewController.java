@@ -1,10 +1,17 @@
+/**
+ * Created by kuba on 13/11/2018
+ */
+
 package WebCrawlerApp.viewController;
+
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import WebCrawlerApp.model.Search;
+
+
 
 public class MainViewController {
 
@@ -16,6 +23,7 @@ public class MainViewController {
 
     @FXML
     private TableColumn<Search, String> searchesColumn;
+
 
     @FXML
     private Button queryEnteredButton;
@@ -31,6 +39,7 @@ public class MainViewController {
 
     }
     
+
 
     @FXML
     private void handleQueryEnteredAction(ActionEvent event) {

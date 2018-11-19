@@ -5,26 +5,20 @@
 package WebCrawlerApp.viewController;
 
 
-import WebCrawlerApp.Main;
 import WebCrawlerApp.model.Search;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Paths;
 
 public class AppController {
 
     private Stage primaryStage;
     private ObservableList<Search> searches;
-
 
 
     public AppController(Stage primaryStage) {
@@ -36,11 +30,11 @@ public class AppController {
 
         // load layout from FXML file
         FXMLLoader loader = new FXMLLoader();
-        Parent rootLayout = loader.load(getClass().getResourceAsStream("/view/MainView.fxml"));
+        Parent rootLayout = loader.load(getClass().getResourceAsStream("/views/MainView.fxml"));
 
         searches = FXCollections.observableArrayList();
         searches.add(new Search("Marsz niepodległości"));
-        searches.add(new Search("Kaczyński"));
+        searches.add(new Search("Premier"));
         MainViewController controller = loader.getController();
         controller.setAppController(this);
         controller.setData(searches);
@@ -50,5 +44,9 @@ public class AppController {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

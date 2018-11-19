@@ -9,7 +9,14 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Search {
+
+    List<Page> pagesToVisit;
+    HashMap<String,Page> pagesVisited;
+    Integer acctualDepth;
     private StringProperty name;
 
     public Search(String name) {
@@ -18,5 +25,9 @@ public class Search {
 
     public final StringProperty getNameProperty() {
         return name;
+    }
+
+    private void search(){
+
     }
 }

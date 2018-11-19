@@ -1,7 +1,3 @@
-/**
- * Created by kuba on 15/11/2018
- */
-
 package WebCrawlerApp;
 import WebCrawlerApp.viewController.AppController;
 import javafx.application.Application;

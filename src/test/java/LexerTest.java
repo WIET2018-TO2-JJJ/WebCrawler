@@ -1,4 +1,4 @@
-import WebCrawlerApp.controller.patternparser.Lexer;
+import WebCrawlerApp.controller.pattern.Lexer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class PatternParserTest {
+public class LexerTest {
 
     private Lexer lexer;
 
@@ -22,7 +22,7 @@ public class PatternParserTest {
         assertEquals(tokens.size(), 9);
     }
 
-    @Test(expected = Lexer.InvalidSyntaxException.class)
+    @Test(expected = Lexer.LexicalErrorException.class)
     public void invalidPatternTest() {
         String input = "* wordA wordB (wordC|wordD) < <12>";
         lexer.lex(input);
@@ -33,7 +33,7 @@ public class PatternParserTest {
         String input = "* wordA wordB (wordC|wordD) < <12>";
         try {
             lexer.lex(input);
-        } catch(final Lexer.InvalidSyntaxException exception) {
+        } catch(final Lexer.LexicalErrorException exception) {
             assertEquals(exception.errorPosition, 28);
         }
     }

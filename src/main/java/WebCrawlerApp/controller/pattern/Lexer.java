@@ -1,4 +1,4 @@
-package WebCrawlerApp.controller.patternparser;
+package WebCrawlerApp.controller.pattern;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,19 +23,19 @@ public class Lexer {
         this.validationErrorPositionPattern = Pattern.compile("^(" + tokenPattens + ")*");
     }
 
-    private void validate(String input) throws InvalidSyntaxException {
+    private void validate(String input) throws LexicalErrorException {
         Matcher matcher = this.validationPattern.matcher(input);
         if (!matcher.find()) {
             matcher = this.validationErrorPositionPattern.matcher(input);
             if (matcher.find()) {
-                throw new InvalidSyntaxException(matcher.group(0).length());
+                throw new LexicalErrorException(matcher.group(0).length());
             } else {
                 throw new RuntimeException("Internal error. Check token patterns.");
             }
         }
     }
 
-    public ArrayList<Token> lex(String input) throws InvalidSyntaxException {
+    public ArrayList<Token> lex(String input) throws LexicalErrorException {
         validate(input);
 
         ArrayList<Token> tokens = new ArrayList<>();
@@ -104,9 +104,9 @@ public class Lexer {
         }
     }
 
-    public static class InvalidSyntaxException extends RuntimeException {
+    public static class LexicalErrorException extends RuntimeException {
         public final int errorPosition;
-        public InvalidSyntaxException(int errorPosition) {
+        public LexicalErrorException(int errorPosition) {
             super();
             this.errorPosition = errorPosition;
         }

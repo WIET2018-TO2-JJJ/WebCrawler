@@ -16,7 +16,8 @@ public class Spider {
         this.results = FXCollections.observableArrayList();
     }
 
-    private void makeSearch() throws IOException{
+
+    public void makeSearch() throws IOException{
         while (!searches.isEmpty()) {
             for (Search search : searches) {
                 results = search.search();

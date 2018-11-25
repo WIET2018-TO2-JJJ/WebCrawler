@@ -30,6 +30,7 @@ public class Search {
     List<Result> results;
     private StringProperty name;
 
+
     public Search(String name, String queryPositive, String queryNegative, Integer acctualDepth, List<Result> results) {
 
         this.name = new SimpleStringProperty(name);

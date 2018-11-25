@@ -48,6 +48,7 @@ public class Pattern {
     }
 
     private String regexPatternFromToken(Token token) {
+        final String afterWordText = "\\s*[\\,\\-\\~]*\\s*";
         switch (token.type) {
             case WILDCARD:
                 return ".*";
@@ -60,9 +61,9 @@ public class Pattern {
                 if (words < 1) {
                     throw new InvalidSyntaxException("Word number wildcard has to have positive number in pattern.");
                 }
-                return String.format("(\\b[\\p{L}_\\-\\/\\d]+\\s*){%d}", words);
+                return String.format("(\\b[\\p{L}_\\-\\/\\d]+" + afterWordText + "){%d}", words);
             case WORD:
-                return "\\b" + java.util.regex.Pattern.quote(token.data) + "\\s*";
+                return "\\b" + java.util.regex.Pattern.quote(token.data) + afterWordText;
             default:
                 throw new IllegalArgumentException("Unexpected token type.");
         }
@@ -91,9 +92,9 @@ public class Pattern {
             }
         }
 
-        patternStringBuilder.append("$");
+        patternStringBuilder.append("[\\,\\.\\!\\?\\~]*$");
 
-        return java.util.regex.Pattern.compile(patternStringBuilder.toString()); // ACCEPT EVERYTHING, FOR NOW
+        return java.util.regex.Pattern.compile(patternStringBuilder.toString());
     }
 
     public static class InvalidSyntaxException extends RuntimeException {

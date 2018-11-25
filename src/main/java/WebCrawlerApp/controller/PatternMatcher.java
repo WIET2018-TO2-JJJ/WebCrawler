@@ -4,11 +4,9 @@ import WebCrawlerApp.controller.pattern.Pattern;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PatternMatcher {
-
-//    public PatternMatcher() {
-//    }
 
     /**
      * Check every sentence if it passes positive pattern and does not pass negative one.
@@ -17,9 +15,16 @@ public class PatternMatcher {
      * @param positivePattern Positive pattern
      */
     public static List<String> matchAgainstPatterns(List<String> sentences, Pattern positivePattern, Pattern negativePattern) {
-        return sentences.parallelStream()
-                .filter(positivePattern::match)
-                .filter(s -> !negativePattern.match(s))
-                .collect(Collectors.toList());
+        Stream<String> s = sentences.parallelStream();
+
+        if (positivePattern != null) {
+            s = s.filter(positivePattern::match);
+        }
+
+        if(negativePattern != null) {
+            s = s.filter(s -> !negativePattern.match(s));
+        }
+
+        return s.collect(Collectors.toList());
     }
 }

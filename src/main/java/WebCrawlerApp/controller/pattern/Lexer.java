@@ -43,65 +43,24 @@ public class Lexer {
         // Begin matching tokens
         Matcher matcher = this.lexPattern.matcher(input);
         while (matcher.find()) {
-            if (matcher.group(TokenType.WHITESPACE.name()) != null)
-                continue;
+            if (matcher.group(TokenType.WHITESPACE.name()) != null) {
+            }
             else if (matcher.group(TokenType.WILDCARD.name()) != null) {
                 tokens.add(new Token(TokenType.WILDCARD, matcher.group(TokenType.WILDCARD.name())));
-                continue;
             } else if (matcher.group(TokenType.WORDNUMBERWILDCARD.name()) != null) {
                 tokens.add(new Token(TokenType.WORDNUMBERWILDCARD, matcher.group(TokenType.WORDNUMBERWILDCARD.name())));
-                continue;
             } else if (matcher.group(TokenType.WORD.name()) != null) {
                 tokens.add(new Token(TokenType.WORD, matcher.group(TokenType.WORD.name())));
-                continue;
             } else if (matcher.group(TokenType.PARENTLEFT.name()) != null) {
                 tokens.add(new Token(TokenType.PARENTLEFT, matcher.group(TokenType.PARENTLEFT.name())));
-                continue;
             } else if (matcher.group(TokenType.PARENTRIGHT.name()) != null) {
                 tokens.add(new Token(TokenType.PARENTRIGHT, matcher.group(TokenType.PARENTRIGHT.name())));
-                continue;
             } else if (matcher.group(TokenType.OR.name()) != null) {
                 tokens.add(new Token(TokenType.OR, matcher.group(TokenType.OR.name())));
-                continue;
             }
         }
 
         return tokens;
-    }
-
-    public enum TokenType {
-        WHITESPACE("\\s"),
-        WILDCARD("\\*"),
-        WORDNUMBERWILDCARD("\\<\\s*\\d+\\s*\\>"),
-        WORD("\\p{L}+"),
-        PARENTLEFT("\\("),
-        PARENTRIGHT("\\)"),
-        OR("\\|");
-
-        public final String pattern;
-
-        TokenType(String pattern) {
-            this.pattern = pattern;
-        }
-    }
-
-    public static class Token {
-        public final TokenType type;
-        public final String data;
-
-        public Token(TokenType type, String data) {
-            this.type = type;
-            if (type == TokenType.WORDNUMBERWILDCARD) {
-                this.data = data.replaceAll("\\s", "");
-            } else {
-                this.data = data;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return String.format("(%s, %s)", type.name(), data);
-        }
     }
 
     public static class LexicalErrorException extends RuntimeException {

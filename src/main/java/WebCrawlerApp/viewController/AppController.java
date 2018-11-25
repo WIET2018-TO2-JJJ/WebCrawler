@@ -33,8 +33,8 @@ public class AppController {
         Parent rootLayout = loader.load(getClass().getResourceAsStream("/views/MainView.fxml"));
 
         searches = FXCollections.observableArrayList();
-        searches.add(new Search("Marsz niepodległości"));
-        searches.add(new Search("Premier"));
+        searches.add(new Search("Marsz niepodległości", "", "", 0));
+        searches.add(new Search("Premier", "", "", 0));
         MainViewController controller = loader.getController();
         controller.setAppController(this);
         controller.setData(searches);

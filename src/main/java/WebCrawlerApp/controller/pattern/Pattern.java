@@ -19,7 +19,8 @@ public class Pattern {
     }
 
     public boolean match(String input) {
-        return compiledPattern.matcher(input).find();
+        Matcher m = compiledPattern.matcher(input);
+        return m.matches();
     }
 
     private void syntaxCheck(List<Token> tokenList) {
@@ -59,22 +60,40 @@ public class Pattern {
                 if (words < 1) {
                     throw new InvalidSyntaxException("Word number wildcard has to have positive number in pattern.");
                 }
-                return String.format("(\\p{L}|_|-|/){%d}", words);
+                return String.format("(\\b[\\p{L}_\\-\\/\\d]+\\s*){%d}", words);
             case WORD:
-                return java.util.regex.Pattern.quote(token.data);
+                return "\\b" + java.util.regex.Pattern.quote(token.data);
             default:
                 throw new IllegalArgumentException("Unexpected token type.");
         }
     }
 
     private java.util.regex.Pattern compile(ArrayList<Token> tokenList) {
-        // TODO: Implement
+        StringBuilder patternStringBuilder = new StringBuilder();
 
-        for (Token token : tokenList) {
+        patternStringBuilder.append("^");
 
+        for (int i = 0; i < tokenList.size(); ++i) {
+            Token token = tokenList.get(i);
+            switch(token.type) {
+                case WILDCARD:
+                case WORD:
+                case WORDNUMBERWILDCARD:
+                    patternStringBuilder.append(regexPatternFromToken(token));
+                    break;
+                case PARENTRIGHT:
+                    throw new InvalidSyntaxException("Unexpected parentheses closing without opening.");
+                case OR:
+                    patternStringBuilder.append("|");
+                    break;
+                default:
+                    throw new InvalidSyntaxException("Unexpected token type: " + token.type.name());
+            }
         }
 
-        return java.util.regex.Pattern.compile(".*"); // ACCEPT EVERYTHING, FOR NOW
+        patternStringBuilder.append("$");
+
+        return java.util.regex.Pattern.compile(patternStringBuilder.toString()); // ACCEPT EVERYTHING, FOR NOW
     }
 
     public static class InvalidSyntaxException extends RuntimeException {

@@ -27,7 +27,7 @@ public class PageTest {
         doc = Jsoup.parse(input, "UTF-8", "https://pl.wikipedia.org");
         pageDownloader.setDocument(doc);
         String queryPositive = "Franklin";
-        String queryNegative = "";
+        String queryNegative = null;
         pageParser = new PageParser(queryPositive,queryNegative,doc);
     }
 

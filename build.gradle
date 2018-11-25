@@ -16,6 +16,14 @@ sourceSets {
             srcDirs= ["src/main/resources"]
         }
     }
+    test {
+        java {
+            srcDirs = ["src/test/java"]
+        }
+        resources {
+            srcDirs = ["src/test/resources"]
+        }
+    }
 }
 
 dependencies {
@@ -24,3 +32,6 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.3'
 }
 
+test {
+    useJUnit()
+}

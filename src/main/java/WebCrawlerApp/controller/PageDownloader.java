@@ -16,6 +16,10 @@ public class PageDownloader {
     private Connection connection;
     private Document document;
 
+    public void setDocument(Document document) {
+        this.document = document;
+    }
+
     public Document downloadPage(String URL,Integer depth) throws IOException{
         connection = Jsoup.connect(URL);
         document = connection.get();

@@ -23,12 +23,8 @@ public class PageParser {
     }
 
     public List<String> searchForWords(Document document){
-        Element body = document.body();
-        String text = body.toString();
-        List<String> sentences = Arrays.asList(text.split("."));
-        for (String sentece : sentences){
-            sentences.add(".");
-        }
+        String body = document.body().text();
+        List<String> sentences = Arrays.asList(body.split("."));
         PatternMatcher patternMatcher = new PatternMatcher();
         Pattern positivePattern = new Pattern(queryPositive);
         Pattern negativePattern = new Pattern(queryNegative);
@@ -37,7 +33,7 @@ public class PageParser {
     }
 
     public Boolean validateUrl(Element element){
-        return true;
+        return element.absUrl("href").contains(document.baseUri());
     }
 
 }

@@ -5,6 +5,7 @@
 package WebCrawlerApp.viewController;
 
 
+import WebCrawlerApp.controller.Spider;
 import WebCrawlerApp.model.Search;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,8 +34,8 @@ public class AppController {
         Parent rootLayout = loader.load(getClass().getResourceAsStream("/views/MainView.fxml"));
 
         searches = FXCollections.observableArrayList();
-        searches.add(new Search("Marsz niepodległości"));
-        searches.add(new Search("Premier"));
+        //searches.add(new Search("Marsz niepodległości"));
+        //searches.add(new Search("Premier"));
         MainViewController controller = loader.getController();
         controller.setAppController(this);
         controller.setData(searches);

@@ -53,7 +53,7 @@ public class MainViewController {
     private void handleQueryEnteredAction(ActionEvent event) throws IOException {
         String queryTaken = query.getText();
         String searchName = queryName.getText();
-        searches.add(new Search(searchName));
+        //searches.add(new Search(searchName));
         //TODO: pass query from textField
         System.out.println(queryTaken);
         FXMLLoader loader = new FXMLLoader();

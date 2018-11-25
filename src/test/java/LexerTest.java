@@ -1,4 +1,5 @@
 import WebCrawlerApp.controller.pattern.Lexer;
+import WebCrawlerApp.controller.pattern.Token;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class LexerTest {
     @Test
     public void validPatternTest() {
         String input = "* wordA wordB ( wordC | wordD ) < 12 >";
-        ArrayList<Lexer.Token> tokens = lexer.lex(input);
+        ArrayList<Token> tokens = lexer.lex(input);
         assertEquals(tokens.size(), 9);
     }
 

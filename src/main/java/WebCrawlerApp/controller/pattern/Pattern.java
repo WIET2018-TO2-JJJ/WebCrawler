@@ -62,7 +62,7 @@ public class Pattern {
                 }
                 return String.format("(\\b[\\p{L}_\\-\\/\\d]+\\s*){%d}", words);
             case WORD:
-                return "\\b" + java.util.regex.Pattern.quote(token.data);
+                return "\\b" + java.util.regex.Pattern.quote(token.data) + "\\s*";
             default:
                 throw new IllegalArgumentException("Unexpected token type.");
         }

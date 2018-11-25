@@ -52,13 +52,13 @@ public class Search {
             if (!pagesVisited.containsKey(pagesToVisit.get(0))){
 
                 if (acctualDepth >= 0) {
-                    acctualDepth--;
                     PageDownloader pageDownloader = new PageDownloader();
                     Document doc = pageDownloader.downloadPage(pagesToVisit.get(0), acctualDepth);
                     String signature = pageDownloader.getSignature();
                     Page page = new Page(pagesToVisit.get(0), signature, acctualDepth);
                     pagesToVisit.remove(0);
                     pagesVisited.put(page.URL, page);
+                    acctualDepth--;
 
                     Elements links = pageDownloader.getURLs();
                     PageParser pageParser = new PageParser(queryPositive, queryNegative, doc);

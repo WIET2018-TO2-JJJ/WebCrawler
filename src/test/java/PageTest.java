@@ -26,8 +26,8 @@ public class PageTest {
         File input = new File("./pageForTest/Wikipedia:Strona główna.html");
         doc = Jsoup.parse(input, "UTF-8", "https://pl.wikipedia.org");
         pageDownloader.setDocument(doc);
-        String queryPositive = "aktor";
-        String queryNegative = "wojna";
+        String queryPositive = "Franklin";
+        String queryNegative = "";
         pageParser = new PageParser(queryPositive,queryNegative,doc);
     }
 
@@ -45,6 +45,16 @@ public class PageTest {
     public void searchForWordsTest(){
         List<String> results = pageParser.searchForWords(doc);
         assertEquals(results.size(),4);
+    }
+
+    @Test
+    public void searchForWordsMatchEverythingTest(){
+
+    }
+
+    @Test
+    public void searchForWordsMatchNothingTest(){
+
     }
 
 }

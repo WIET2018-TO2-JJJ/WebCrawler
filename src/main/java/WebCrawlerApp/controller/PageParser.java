@@ -24,12 +24,15 @@ public class PageParser {
 
     public List<String> searchForWords(Document document){
         String body = document.body().text();
-        List<String> sentences = Arrays.asList(body.split("."));
+        System.out.println(body);
+        List<String> sentences = Arrays.asList(body.split("\\. | • "));
+        for (String s : sentences){
+            System.out.println(s);
+        }
         PatternMatcher patternMatcher = new PatternMatcher();
         Pattern positivePattern = new Pattern(queryPositive);
         Pattern negativePattern = new Pattern(queryNegative);
-        List<String> results = patternMatcher.matchAgainstPatterns(sentences,positivePattern,negativePattern);
-        return results;
+        return PatternMatcher.matchAgainstPatterns(sentences,positivePattern,negativePattern);
     }
 
     public Boolean validateUrl(Element element){

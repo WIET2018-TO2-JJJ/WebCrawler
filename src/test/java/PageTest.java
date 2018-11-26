@@ -11,7 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.jsoup.nodes.Document;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -47,6 +49,9 @@ public class PageTest {
     public void searchForWordsTest(){
         String body = doc.body().text();
         List<String> sentences = new ArrayList<>();
+        Elements elements = doc.body().select("p").append("\n");
+        BreakIterator bi = BreakIterator.getSentenceInstance();
+
 
         Pattern positive = new Pattern("kapitan");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
@@ -54,10 +59,41 @@ public class PageTest {
     }
 
     @Test
+    public void sentencesCutter(){
+        File onet = new File("./pageForTest/wiadomosci.onet.html");
+        Document onetDoc = null;
+        try {
+            onetDoc = Jsoup.parse(onet, "UTF-8", "https://wiadomosci.onet.pl");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<String> sentences = new ArrayList<>();
+        Elements elements = onetDoc.body().select("p,li").append("\n");
+        BreakIterator bi = BreakIterator.getSentenceInstance();
+
+        for(Element element : elements){
+            bi.setText(element.text());
+            int index = 0;
+            while (bi.next() != BreakIterator.DONE) {
+                String sentence = element.text().substring(index, bi.current());
+                //System.out.println("Sentence: " + sentence);
+                sentences.add(sentence);
+                index = bi.current();
+            }
+        }
+        for(String sentence : sentences){
+            System.out.println(sentence);
+            System.out.println();
+        }
+    }
+
+
+    @Test
     public void matchTest(){
         List<String> sentences = new ArrayList<>();
         sentences.add("Kapitan Franklin był na morzu.");
-        sentences.add("Jego statek rozbił się");
+        sentences.add("Jego statek rozbił się.");
 
         Pattern positive = new Pattern("kapitan");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);

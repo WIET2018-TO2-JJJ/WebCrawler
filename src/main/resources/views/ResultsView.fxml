@@ -40,7 +40,7 @@
                         </Label>
                      </left>
                      <center>
-                        <Button fx:id="newSearchButton" onAction="#handleNewSearchButton" mnemonicParsing="false" prefHeight="41.0" prefWidth="58.0" style="-fx-background-color: #0000;" BorderPane.alignment="BOTTOM_RIGHT">
+                        <Button fx:id="newSearchButton" mnemonicParsing="false" onAction="#handleNewSearchButton" prefHeight="41.0" prefWidth="58.0" style="-fx-background-color: #0000;" BorderPane.alignment="BOTTOM_RIGHT">
                            <graphic>
                               <ImageView fitHeight="80.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -54,21 +54,17 @@
                      </center>
                         </BorderPane>
                     </top>
-                    <bottom>
-                        <BorderPane prefHeight="438.0" prefWidth="548.0" BorderPane.alignment="CENTER">
-                     <center>
-                        <TableView fx:id="resultsTable" prefHeight="412.0" prefWidth="548.0" BorderPane.alignment="CENTER">
-                          <columns>
-                            <TableColumn fx:id="urlColumn" editable="false" prefWidth="75.0" text="Page" />
-                            <TableColumn fx:id="sentenceColumn" prefWidth="75.0" text="Sentence" />
-                          </columns>
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                            </columnResizePolicy>
-                        </TableView>
-                     </center>
-                        </BorderPane>
-                    </bottom>
+               <bottom>
+                  <TableView fx:id="resultsTable" prefHeight="426.0" prefWidth="548.0" BorderPane.alignment="CENTER">
+                    <columns>
+                      <TableColumn fx:id="urlColumn" editable="false" prefWidth="75.0" text="Page" />
+                      <TableColumn fx:id="sentenceColumn" prefWidth="75.0" text="Sentence" />
+                    </columns>
+                      <columnResizePolicy>
+                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                      </columnResizePolicy>
+                  </TableView>
+               </bottom>
                 </BorderPane>
             </children>
         </VBox>

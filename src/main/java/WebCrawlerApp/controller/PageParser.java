@@ -24,11 +24,7 @@ public class PageParser {
 
     public List<String> searchForWords(Document document){
         String body = document.body().text();
-        System.out.println(body);
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
-        for (String s : sentences){
-            System.out.println(s);
-        }
         PatternMatcher patternMatcher = new PatternMatcher();
         Pattern positivePattern = new Pattern(queryPositive);
         Pattern negativePattern = new Pattern(queryNegative);

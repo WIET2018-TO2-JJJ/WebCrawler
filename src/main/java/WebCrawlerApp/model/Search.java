@@ -11,6 +11,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -22,16 +23,17 @@ import java.util.List;
 
 public class Search {
 
-    List<String> pagesToVisit;
-    HashMap<String,Page> pagesVisited;
-    Integer acctualDepth;
-    String queryPositive;
-    String queryNegative;
-    List<Result> results;
+    private List<String> pagesToVisit;
+    private HashMap<String,Page> pagesVisited;
+    private Integer acctualDepth;
+    private String queryPositive;
+    private String queryNegative;
+
+    private ObservableList<Result> results;
     private StringProperty name;
 
 
-    public Search(String name, String queryPositive, String queryNegative, Integer acctualDepth, List<Result> results) {
+    public Search(String name, String queryPositive, String queryNegative, Integer acctualDepth) {
 
         this.name = new SimpleStringProperty(name);
         this.pagesToVisit = new LinkedList<>();
@@ -39,14 +41,20 @@ public class Search {
         this.queryPositive = queryPositive;
         this.queryNegative = queryNegative;
         this.acctualDepth = acctualDepth;
-        this.results = results;
+        this.results = FXCollections.observableArrayList();
     }
 
-    public final StringProperty getNameProperty() {
+    public ObservableList<Result> getResults() {
+        return results;
+    }
+
+    public StringProperty getNameProperty() {
         return name;
     }
 
-    public List<Result> search() throws IOException{
+    public String getName() { return name.getValue(); }
+
+    public void search(){
 
         while (!pagesToVisit.isEmpty()) {
 
@@ -75,6 +83,5 @@ public class Search {
                 } else break;
             }
         }
-        return results;
     }
 }

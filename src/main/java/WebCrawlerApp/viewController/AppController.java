@@ -20,10 +20,14 @@ public class AppController {
 
     private Stage primaryStage;
     private ObservableList<Search> searches;
+    private Spider spider;
 
 
     public AppController(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.spider = new Spider();
+        this.searches = spider.getSearches();
+
     }
 
     public void initRootLayout() throws IOException {
@@ -33,7 +37,6 @@ public class AppController {
         FXMLLoader loader = new FXMLLoader();
         Parent rootLayout = loader.load(getClass().getResourceAsStream("/views/MainView.fxml"));
 
-        searches = FXCollections.observableArrayList();
         //searches.add(new Search("Marsz niepodległości"));
         //searches.add(new Search("Premier"));
         MainViewController controller = loader.getController();
@@ -45,6 +48,38 @@ public class AppController {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+    }
+
+    public void showResult(Search search){
+        FXMLLoader loader = new FXMLLoader();
+        Parent resultsLayout = null;
+        try {
+            resultsLayout = loader.load(getClass().getResourceAsStream("/views/ResultsView.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage mainStage;
+        mainStage = primaryStage;
+        ResultsViewController controller = loader.getController();
+        controller.setAppController(this);
+        controller.setData(searches, search);
+        mainStage.getScene().setRoot(resultsLayout);
+    }
+
+    public void showMainView(){
+        FXMLLoader loader = new FXMLLoader();
+        Parent resultsLayout = null;
+        try {
+            resultsLayout = loader.load(getClass().getResourceAsStream("/views/MainView.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage mainStage;
+        mainStage = primaryStage;
+        MainViewController controller = loader.getController();
+        controller.setAppController(this);
+        controller.setData(searches);
+        mainStage.getScene().setRoot(resultsLayout);
     }
 
     public Stage getPrimaryStage() {

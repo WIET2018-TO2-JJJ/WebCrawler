@@ -5,7 +5,10 @@
 package WebCrawlerApp.viewController;
 
 
+import WebCrawlerApp.model.Result;
 import WebCrawlerApp.model.Search;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +26,7 @@ public class ResultsViewController {
     private Label searchNameLabel;
 
     @FXML
-    private Button showDiagramButton;
+    private Button newSearchButton;
 
     @FXML
     private TableView<Search> searchesTable;
@@ -32,30 +35,42 @@ public class ResultsViewController {
     private TableColumn<Search, String> searchesColumn;
 
     @FXML
-    private TableView<Search> resultsTable;
+    private TableView<Result> resultsTable;
 
     @FXML
-    private TableColumn<Search, String> resultColumn;
+    private TableColumn<Result, String> urlColumn;
+
+    @FXML
+    private TableColumn<Result, String> sentenceColumn;
 
 
     @FXML
     public void initialize(){
         searchesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         searchesColumn.setCellValueFactory(dataValue -> dataValue.getValue().getNameProperty());
+        searchesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Search>() {
+            @Override
+            public void changed(ObservableValue<? extends Search> observable, Search oldValue, Search newValue) {
+                appController.showResult(newValue);
+            }
+        });
+
     }
 
     @FXML
-    private void handleShowDiagramButton(ActionEvent event) throws IOException {
-        System.out.print("btn");
+    private void handleNewSearchButton(ActionEvent event) throws IOException {
+        appController.showMainView();
     }
 
     public void setAppController(AppController appController) {
         this.appController = appController;
     }
 
-    public void setData(ObservableList<Search> searches, String searchName){
-        this.searchName = searchName;
+    public void setData(ObservableList<Search> searches, Search mySearch){
+        this.searchName = mySearch.getName();
         searchesTable.setItems(searches);
         searchNameLabel.setText(searchName);
+        resultsTable.setItems(mySearch.getResults());
     }
+
 }

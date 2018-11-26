@@ -8,6 +8,8 @@ package WebCrawlerApp.viewController;
 
 import WebCrawlerApp.model.Search;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,32 +40,34 @@ public class MainViewController {
     private TextField queryName;
 
     @FXML
-    private TextField query;
+    private TextField queryPositiveTF;
+
+    @FXML
+    private TextField queryNegativeTF;
 
 
     @FXML
     public void initialize(){
         searchesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         searchesColumn.setCellValueFactory(dataValue -> dataValue.getValue().getNameProperty());
-        BooleanBinding searchButtonBinding = query.textProperty().isEmpty().or(queryName.textProperty().isEmpty());
+        BooleanBinding searchButtonBinding = (queryPositiveTF.textProperty().isEmpty().and(queryNegativeTF.textProperty().isEmpty())).or(queryName.textProperty().isEmpty());
         queryEnteredButton.disableProperty().bind(searchButtonBinding);
+        searchesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Search>() {
+            @Override
+            public void changed(ObservableValue<? extends Search> observable, Search oldValue, Search newValue) {
+                appController.showResult(newValue);
+            }
+        });
     }
 
     @FXML
     private void handleQueryEnteredAction(ActionEvent event) throws IOException {
-        String queryTaken = query.getText();
+        String queryPositive = queryPositiveTF.getText();
+        String queryNegative = queryNegativeTF.getText();
         String searchName = queryName.getText();
-        //searches.add(new Search(searchName));
-        //TODO: pass query from textField
-        System.out.println(queryTaken);
-        FXMLLoader loader = new FXMLLoader();
-        Parent resultsLayout = loader.load(getClass().getResourceAsStream("/views/ResultsView.fxml"));
-        Stage mainStage;
-        mainStage = appController.getPrimaryStage();
-        ResultsViewController controller = loader.getController();
-        controller.setAppController(appController);
-        controller.setData(searches, searchName);
-        mainStage.getScene().setRoot(resultsLayout);
+        searches.add(new Search(searchName,queryPositive, queryNegative,0));
+        appController.showResult(searches.get(searches.size()-1));
+        //System.out.println(queryTaken);
     }
 
 

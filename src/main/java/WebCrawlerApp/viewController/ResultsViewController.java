@@ -54,6 +54,8 @@ public class ResultsViewController {
                 appController.showResult(newValue);
             }
         });
+        urlColumn.setCellValueFactory(result -> result.getValue().getURLProperty());
+        sentenceColumn.setCellValueFactory(result -> result.getValue().getSentenceProperty());
 
     }
 

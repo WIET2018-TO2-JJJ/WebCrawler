@@ -14,48 +14,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="160.0" minWidth="550.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WebCrawlerApp.viewController.MainViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="160.0" minWidth="550.0" prefHeight="507.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WebCrawlerApp.viewController.MainViewController">
    <children>
-      <VBox minWidth="155.0" prefHeight="400.0" prefWidth="155.0" style="-fx-background-color: #333645;" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="510.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label minHeight="75.0" minWidth="155.0" prefHeight="75.0" prefWidth="155.0" style="-fx-background-color: #2b3b76;" text="   WebCrawler" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="Helvetica Neue" size="19.0" />
-               </font>
-            </Label>
-            <TableView fx:id="searchesTable" prefHeight="329.0" prefWidth="155.0" VBox.vgrow="ALWAYS">
-              <columns>
-                <TableColumn fx:id="searchesColumn" prefWidth="155.0" resizable="false" style="-fx-background-color: rgba(67,103,145,0.61); -fx-text-color: #000000;" text="Searches" />
-              </columns>
-            </TableView>
-         </children>
-      </VBox>
-      <VBox layoutX="156.0" prefHeight="400.0" prefWidth="444.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <BorderPane prefHeight="398.0" prefWidth="444.0">
-               <bottom>
-                  <Pane prefHeight="329.0" prefWidth="445.0" style="-fx-background-color: rgba(230,230,230,0.25);" BorderPane.alignment="CENTER">
-                     <children>
-                        <Label layoutX="75.0" layoutY="77.0" text="What do you want to crawl?">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="queryEnteredButton" layoutX="267.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleQueryEnteredAction" text="search">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <TextField fx:id="query" layoutX="75.0" layoutY="103.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </Pane>
-               </bottom>
+            <BorderPane prefHeight="398.0" prefWidth="444.0" style="-fx-background-color: rgba(230,230,230,0.25);" VBox.vgrow="ALWAYS">
                <top>
-                  <BorderPane prefHeight="75.0" prefWidth="444.0" style="-fx-background-color: rgba(255,255,255,0.73);" BorderPane.alignment="CENTER">
+                  <BorderPane prefHeight="80.0" prefWidth="549.0" style="-fx-background-color: rgba(255,255,255,0.73);" BorderPane.alignment="CENTER">
                      <right>
                         <ImageView fitHeight="68.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                            <image>
@@ -78,7 +43,52 @@
                      </left>
                   </BorderPane>
                </top>
+               <bottom>
+                  <BorderPane prefHeight="438.0" prefWidth="548.0" BorderPane.alignment="CENTER">
+                     <center>
+                        <Pane prefHeight="426.0" prefWidth="549.0" style="-: rgba(230,230,230,0.25);" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" text="What do you want to crawl?">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="queryEnteredButton" layoutX="325.0" layoutY="118.0" mnemonicParsing="false" onAction="#handleQueryEnteredAction" text="search">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
+                              <TextField fx:id="queryPositiveTF" layoutX="75.0" layoutY="103.0" prefHeight="29.0" prefWidth="192.0">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="queryNegativeTF" layoutX="75.0" layoutY="145.0" prefHeight="29.0" prefWidth="192.0">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </Pane>
+                     </center>
+                  </BorderPane>
+               </bottom>
             </BorderPane>
-         </children></VBox>
+         </children>
+      </VBox>
+      <VBox minWidth="155.0" prefHeight="510.0" prefWidth="210.0" style="-fx-background-color: #333645;" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label prefHeight="80.0" prefWidth="210.0" style="-fx-background-color: #2b3b76;" text="   WebCrawler" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Helvetica Neue" size="22.0" />
+               </font>
+            </Label>
+            <TableView fx:id="searchesTable" prefHeight="329.0" prefWidth="155.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="searchesColumn" prefWidth="210.0" resizable="false" style="-fx-background-color: rgba(67,103,145,0.61); -fx-text-color: #000000;" text="Searches" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

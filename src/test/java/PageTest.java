@@ -38,26 +38,30 @@ public class PageTest {
         Elements elements = pageDownloader.getURLs();
         List<String> urls = new LinkedList<>();
         for (Element element : elements){
-                urls.add(element.absUrl("href"));
+            urls.add(element.absUrl("href"));
         }
         assertEquals(elements.size(),urls.size());
     }
 
     @Test
     public void searchForWordsTest(){
-        Elements body = doc.body().select("p,li").append("\n");
+        String body = doc.body().text();
         List<String> sentences = new ArrayList<>();
-        for (Element e : body){
-            sentences.add(e.text());
-        }
-        for (String o : sentences){
-            System.out.println(o);
-            System.out.println();
-        }
 
-        Pattern positive = new Pattern("był");
+        Pattern positive = new Pattern("kapitan");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
         assertEquals(results.size(),5);
+    }
+
+    @Test
+    public void matchTest(){
+        List<String> sentences = new ArrayList<>();
+        sentences.add("Kapitan Franklin był na morzu.");
+        sentences.add("Jego statek rozbił się");
+
+        Pattern positive = new Pattern("kapitan");
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
+        assertEquals(results.size(),1);
     }
 
     @Test

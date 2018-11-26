@@ -1,6 +1,6 @@
 package WebCrawlerApp.controller;
 
-import WebCrawlerApp.controller.pattern.Pattern;
+import WebCrawlerApp.controller.pattern.SentencePattern;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,17 +12,17 @@ public class PatternMatcher {
      * Check every sentence if it passes positive pattern and does not pass negative one.
      *
      * @param sentences       List of sentences to check.
-     * @param positivePattern Positive pattern
+     * @param positiveSentencePattern Positive pattern
      */
-    public static List<String> matchAgainstPatterns(List<String> sentences, Pattern positivePattern, Pattern negativePattern) {
+    public static List<String> matchAgainstPatterns(List<String> sentences, SentencePattern positiveSentencePattern, SentencePattern negativeSentencePattern) {
         Stream<String> s = sentences.parallelStream();
 
-        if (positivePattern != null) {
-            s = s.filter(positivePattern::match);
+        if (positiveSentencePattern != null) {
+            s = s.filter(positiveSentencePattern::match);
         }
 
-        if(negativePattern != null) {
-            s = s.filter(sentence -> !negativePattern.match(sentence));
+        if(negativeSentencePattern != null) {
+            s = s.filter(sentence -> !negativeSentencePattern.match(sentence));
         }
 
         return s.collect(Collectors.toList());

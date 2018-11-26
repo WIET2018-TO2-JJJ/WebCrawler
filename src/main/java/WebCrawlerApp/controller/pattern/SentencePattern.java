@@ -3,19 +3,27 @@ package WebCrawlerApp.controller.pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Pattern {
+public class SentencePattern {
+    private static final String endOfSentencePattern = "[\\,\\.\\!\\?\\~]*";
+    private static final String afterWordText = "\\s*[\\,\\-\\~]*\\s*";
+    private static final String wildcardPattern = ".*";
+    private static final String wordNumberWildcardExtractionPattern = "^.*(?<num>\\d+).*$";
+    private Pattern compiledPattern;
 
-    java.util.regex.Pattern compiledPattern;
+    public SentencePattern(String patternString) {
+        this(patternString, true);
+    }
 
-    public Pattern(String patternString) {
+    public SentencePattern(String patternString, boolean caseInsensitive) {
         Lexer lexer = new Lexer();
 
         ArrayList<Token> patternTokens = lexer.lex(patternString);
 
         syntaxCheck(patternTokens);
 
-        compiledPattern = compile(patternTokens);
+        compiledPattern = compile(patternTokens, caseInsensitive);
     }
 
     public boolean match(String input) {
@@ -48,12 +56,11 @@ public class Pattern {
     }
 
     private String regexPatternFromToken(Token token) {
-        final String afterWordText = "\\s*[\\,\\-\\~]*\\s*";
         switch (token.type) {
             case WILDCARD:
-                return ".*";
+                return wildcardPattern;
             case WORDNUMBERWILDCARD:
-                Matcher matcher = java.util.regex.Pattern.compile("^.*(?<num>\\d+).*$").matcher(token.data);
+                Matcher matcher = Pattern.compile(wordNumberWildcardExtractionPattern).matcher(token.data);
                 if (!matcher.find()) {
                     throw new InvalidSyntaxException("Number expected in word number wildcard");
                 }
@@ -61,22 +68,21 @@ public class Pattern {
                 if (words < 1) {
                     throw new InvalidSyntaxException("Word number wildcard has to have positive number in pattern.");
                 }
-                return String.format("(\\b[\\p{L}_\\-\\/\\d]+" + afterWordText + "){%d}", words);
+                return String.format("(\\b[\\p{L}_\\-\\/\\d]+%s){%d}", afterWordText, words);
             case WORD:
-                return "\\b" + java.util.regex.Pattern.quote(token.data) + afterWordText;
+                return "\\b" + Pattern.quote(token.data) + afterWordText;
             default:
                 throw new IllegalArgumentException("Unexpected token type.");
         }
     }
 
-    private java.util.regex.Pattern compile(ArrayList<Token> tokenList) {
+    private Pattern compile(ArrayList<Token> tokenList, boolean caseInsensitive) {
         StringBuilder patternStringBuilder = new StringBuilder();
 
         patternStringBuilder.append("^");
 
-        for (int i = 0; i < tokenList.size(); ++i) {
-            Token token = tokenList.get(i);
-            switch(token.type) {
+        for (Token token : tokenList) {
+            switch (token.type) {
                 case WILDCARD:
                 case WORD:
                 case WORDNUMBERWILDCARD:
@@ -92,13 +98,14 @@ public class Pattern {
             }
         }
 
-        patternStringBuilder.append("[\\,\\.\\!\\?\\~]*$");
+        patternStringBuilder.append(endOfSentencePattern + "$");
 
-        return java.util.regex.Pattern.compile(patternStringBuilder.toString());
+        return Pattern.compile(patternStringBuilder.toString(),
+                caseInsensitive ? Pattern.CASE_INSENSITIVE : 0);
     }
 
     public static class InvalidSyntaxException extends RuntimeException {
-        public InvalidSyntaxException(String message) {
+        InvalidSyntaxException(String message) {
             super(message);
         }
     }

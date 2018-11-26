@@ -1,11 +1,9 @@
 import WebCrawlerApp.controller.PageDownloader;
 import WebCrawlerApp.controller.PageParser;
 import WebCrawlerApp.controller.PatternMatcher;
-import WebCrawlerApp.controller.pattern.Pattern;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import WebCrawlerApp.controller.pattern.SentencePattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +46,7 @@ public class PageTest {
         String body = doc.body().text();
         List<String> sentences = new ArrayList<>();
 
-        Pattern positive = new Pattern("kapitan");
+        SentencePattern positive = new SentencePattern("kapitan");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
         assertEquals(results.size(),5);
     }
@@ -59,7 +57,7 @@ public class PageTest {
         sentences.add("Kapitan Franklin był na morzu.");
         sentences.add("Jego statek rozbił się");
 
-        Pattern positive = new Pattern("kapitan");
+        SentencePattern positive = new SentencePattern("kapitan");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
         assertEquals(results.size(),1);
     }
@@ -69,7 +67,7 @@ public class PageTest {
         String body = doc.body().text();
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
 
-        Pattern positive = new Pattern("*");
+        SentencePattern positive = new SentencePattern("*");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
         assertEquals(results.size(),sentences.size());
     }
@@ -79,7 +77,7 @@ public class PageTest {
         String body = doc.body().text();
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
 
-        Pattern negative = new Pattern("*");
+        SentencePattern negative = new SentencePattern("*");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,null,negative);
         assertEquals(results.size(),0);
     }

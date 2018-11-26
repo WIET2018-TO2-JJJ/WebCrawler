@@ -1,13 +1,10 @@
 package WebCrawlerApp.controller;
 
-import WebCrawlerApp.controller.pattern.Pattern;
-import WebCrawlerApp.model.Result;
+import WebCrawlerApp.controller.pattern.SentencePattern;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PageParser {
@@ -26,9 +23,9 @@ public class PageParser {
         String body = document.body().text();
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
         PatternMatcher patternMatcher = new PatternMatcher();
-        Pattern positivePattern = new Pattern(queryPositive);
-        Pattern negativePattern = new Pattern(queryNegative);
-        return PatternMatcher.matchAgainstPatterns(sentences,positivePattern,negativePattern);
+        SentencePattern positiveSentencePattern = new SentencePattern(queryPositive);
+        SentencePattern negativeSentencePattern = new SentencePattern(queryNegative);
+        return PatternMatcher.matchAgainstPatterns(sentences, positiveSentencePattern, negativeSentencePattern);
     }
 
     public Boolean validateUrl(Element element){

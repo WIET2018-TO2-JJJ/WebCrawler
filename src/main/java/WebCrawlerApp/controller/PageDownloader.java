@@ -20,12 +20,12 @@ public class PageDownloader {
         this.document = document;
     }
 
-    public Document downloadPage(String URL,Integer depth){
+    public Document downloadPage(String URL){
         connection = Jsoup.connect(URL);
         try {
             document = connection.get();
         } catch (IOException e) {
-            System.out.println("connection error"); //TODO: connection error handler
+            System.out.println("connection error");
         }
         return document;
     }

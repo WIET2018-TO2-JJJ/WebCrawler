@@ -7,7 +7,6 @@ package WebCrawlerApp.model;
 
 import WebCrawlerApp.controller.PageDownloader;
 import WebCrawlerApp.controller.PageParser;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -15,8 +14,7 @@ import javafx.collections.ObservableList;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,13 +54,14 @@ public class Search {
 
     public void search(){
 
-        while (!pagesToVisit.isEmpty()) {
+        while (acctualDepth >= 0) {
 
-            if (!pagesVisited.containsKey(pagesToVisit.get(0))){
+            if (!pagesToVisit.isEmpty()) {
 
-                if (acctualDepth >= 0) {
+                if (!pagesVisited.containsKey(pagesToVisit.get(0))) {
+
                     PageDownloader pageDownloader = new PageDownloader();
-                    Document doc = pageDownloader.downloadPage(pagesToVisit.get(0), acctualDepth);
+                    Document doc = pageDownloader.downloadPage(pagesToVisit.get(0));
                     String signature = pageDownloader.getSignature();
                     Page page = new Page(pagesToVisit.get(0), signature, acctualDepth);
                     pagesToVisit.remove(0);
@@ -80,8 +79,11 @@ public class Search {
                         Result result = new Result(page.URL, sentence);
                         results.add(result);
                     }
-                } else break;
-            }
+
+                } else {
+                    pagesToVisit.remove(0);
+                }
+            } else break;
         }
     }
 }

@@ -47,29 +47,8 @@ public class PageTest {
 
     @Test
     public void searchForWordsTest(){
-        String body = doc.body().text();
         List<String> sentences = new ArrayList<>();
-        Elements elements = doc.body().select("p").append("\n");
-        BreakIterator bi = BreakIterator.getSentenceInstance();
-
-
-        Pattern positive = new Pattern("kapitan");
-        List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
-        assertEquals(results.size(),5);
-    }
-
-    @Test
-    public void sentencesCutter(){
-        File onet = new File("./pageForTest/wiadomosci.onet.html");
-        Document onetDoc = null;
-        try {
-            onetDoc = Jsoup.parse(onet, "UTF-8", "https://wiadomosci.onet.pl");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        List<String> sentences = new ArrayList<>();
-        Elements elements = onetDoc.body().select("p,li").append("\n");
+        Elements elements = doc.body().select("p,li").append("\n");
         BreakIterator bi = BreakIterator.getSentenceInstance();
 
         for(Element element : elements){
@@ -82,20 +61,20 @@ public class PageTest {
                 index = bi.current();
             }
         }
-        for(String sentence : sentences){
-            System.out.println(sentence);
-            System.out.println();
-        }
-    }
 
+        Pattern positive = new Pattern("* Psara *");
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
+        assertEquals(results.size(),3);
+    }
 
     @Test
     public void matchTest(){
         List<String> sentences = new ArrayList<>();
-        sentences.add("Kapitan Franklin był na morzu.");
-        sentences.add("Jego statek rozbił się.");
+        sentences.add("sfsf");
+        sentences.add("Kapitan Franklin był na morzu");
+        sentences.add("Jego statek rozbił się");
 
-        Pattern positive = new Pattern("kapitan");
+        Pattern positive = new Pattern("Kapitan *");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
         assertEquals(results.size(),1);
     }

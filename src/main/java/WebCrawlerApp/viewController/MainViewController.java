@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,8 +71,12 @@ public class MainViewController {
         String queryNegative = queryNegativeTF.getText();
         String searchName = queryName.getText();
         String urlsString = pagesTextArea.getText();
-        List<String> URLs = Arrays.asList(urlsString.split(", |\n"));
-        for(String s : URLs){ System.out.println(s);}
+        List<String> tmpURLs = Arrays.asList(urlsString.split(", |\n"));
+        List<String> URLs = new ArrayList<String>();
+        for(String s : tmpURLs){
+            System.out.println(s);
+            URLs.add(s);
+        }
         searches.add(new Search(searchName,queryPositive, queryNegative,0, URLs));
         appController.showResult(searches.get(searches.size()-1));
         //System.out.println(queryTaken);

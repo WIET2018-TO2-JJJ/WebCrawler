@@ -27,6 +27,7 @@ public class PageDownloader {
         } catch (IOException e) {
             System.out.println("connection error");
         }
+        //System.out.println(document.text());
         return document;
     }
 

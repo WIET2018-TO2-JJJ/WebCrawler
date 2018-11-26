@@ -20,6 +20,7 @@ public class Spider {
         searches.addListener(new ListChangeListener<Search>() {
             @Override
             public void onChanged(Change<? extends Search> c) {
+                //System.out.println(searches.get(searches.size()-1).getName());
                 makeSearch(searches.size()-1);
             }
         });

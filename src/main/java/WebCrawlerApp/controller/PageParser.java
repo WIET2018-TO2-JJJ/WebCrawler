@@ -44,7 +44,7 @@ public class PageParser {
         //PatternMatcher patternMatcher = new PatternMatcher();
         Pattern positivePattern = new Pattern(queryPositive);
         Pattern negativePattern = new Pattern(queryNegative);
-        return PatternMatcher.matchAgainstPatterns(sentences,positivePattern,negativePattern);
+        return PatternMatcher.matchAgainstPatterns(sentences,positivePattern,null);
     }
 
     public Boolean validateUrl(Element element){

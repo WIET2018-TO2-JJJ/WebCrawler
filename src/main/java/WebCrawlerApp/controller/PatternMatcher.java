@@ -22,7 +22,7 @@ public class PatternMatcher {
         }
 
         if(negativePattern != null) {
-            s = s.filter(l -> !negativePattern.match(l));
+            s = s.filter(sentence -> !negativePattern.match(sentence));
         }
 
         return s.collect(Collectors.toList());

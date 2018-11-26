@@ -1,9 +1,12 @@
+import WebCrawlerApp.controller.PatternMatcher;
 import WebCrawlerApp.controller.pattern.Lexer;
+import WebCrawlerApp.controller.pattern.Pattern;
 import WebCrawlerApp.controller.pattern.Token;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 

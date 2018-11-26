@@ -2,11 +2,11 @@
 The desktop application used for searching specified websites based on made query.
 
 ## Query language
-* - anything
-text - search for word 'text' : Letter case sensitive
-<N> - match N words
-| - logical OR
-() - brackets
+\*    - anything <br/>
+text  - search for word 'text' : Letter case sensitive <br/>
+\<N>  - match N words <br/>
+|     - logical OR <br/>
+()    - brackets <br/>
   
 Example: <5> (word1 | word2) means match any five words and then must be word1 OR word2
 

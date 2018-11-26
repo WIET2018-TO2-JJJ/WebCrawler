@@ -33,10 +33,10 @@ public class Search {
     private StringProperty name;
 
 
-    public Search(String name, String queryPositive, String queryNegative, Integer acctualDepth) {
+    public Search(String name, String queryPositive, String queryNegative, Integer acctualDepth, List<String> pagesToVisit) {
 
         this.name = new SimpleStringProperty(name);
-        this.pagesToVisit = new LinkedList<>();
+        this.pagesToVisit = pagesToVisit;
         this.pagesVisited = new HashMap<>();
         this.queryPositive = queryPositive;
         this.queryNegative = queryNegative;

@@ -6,6 +6,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.text.BreakIterator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,9 +25,23 @@ public class PageParser {
     }
 
     public List<String> searchForWords(Document document){
-        String body = document.body().text();
-        List<String> sentences = Arrays.asList(body.split("\\. | • "));
-        PatternMatcher patternMatcher = new PatternMatcher();
+
+        List<String> sentences = new ArrayList<>();
+        Elements elements = document.body().select("p,li").append("\n");
+        BreakIterator bi = BreakIterator.getSentenceInstance();
+
+        for(Element element : elements){
+            bi.setText(element.text());
+            int index = 0;
+            while (bi.next() != BreakIterator.DONE) {
+                String sentence = element.text().substring(index, bi.current());
+                //System.out.println("Sentence: " + sentence);
+                sentences.add(sentence);
+                index = bi.current();
+            }
+        }
+
+        //PatternMatcher patternMatcher = new PatternMatcher();
         Pattern positivePattern = new Pattern(queryPositive);
         Pattern negativePattern = new Pattern(queryNegative);
         return PatternMatcher.matchAgainstPatterns(sentences,positivePattern,negativePattern);

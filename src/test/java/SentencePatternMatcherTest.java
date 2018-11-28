@@ -1,5 +1,5 @@
 import WebCrawlerApp.controller.PatternMatcher;
-import WebCrawlerApp.controller.pattern.Pattern;
+import WebCrawlerApp.controller.pattern.SentencePattern;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class PatternMatcherTest {
+public class SentencePatternMatcherTest {
     @Test
     public void wordsNumberAndOrTest() {
         List<String> list = new ArrayList<>();
@@ -16,7 +16,7 @@ public class PatternMatcherTest {
         list.add("asd sdf dfg");
         list.add("asd sdf dfg fdg");
 
-        Pattern p = new Pattern("<1> | <3>");
+        SentencePattern p = new SentencePattern("<1> | <3>");
         int len = PatternMatcher.matchAgainstPatterns(list, p, null).size();
         assertEquals(len, 2);
     }
@@ -29,7 +29,7 @@ public class PatternMatcherTest {
         list.add("asd sdf dfg");
         list.add("asd sdf dfg fdg");
 
-        Pattern p = new Pattern("fdads <1>");
+        SentencePattern p = new SentencePattern("fdads <1>");
         int len = PatternMatcher.matchAgainstPatterns(list, p, null).size();
         assertEquals(len, 1);
     }

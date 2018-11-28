@@ -1,8 +1,7 @@
 import WebCrawlerApp.controller.PageDownloader;
 import WebCrawlerApp.controller.PageParser;
 import WebCrawlerApp.controller.PatternMatcher;
-import WebCrawlerApp.controller.pattern.Pattern;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import WebCrawlerApp.controller.pattern.SentencePattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
@@ -11,9 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.jsoup.nodes.Document;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -47,34 +44,21 @@ public class PageTest {
 
     @Test
     public void searchForWordsTest(){
+        String body = doc.body().text();
         List<String> sentences = new ArrayList<>();
-        Elements elements = doc.body().select("p,li").append("\n");
-        BreakIterator bi = BreakIterator.getSentenceInstance();
 
-        for(Element element : elements){
-            bi.setText(element.text());
-            int index = 0;
-            while (bi.next() != BreakIterator.DONE) {
-                String sentence = element.text().substring(index, bi.current());
-                //System.out.println("Sentence: " + sentence);
-                sentences.add(sentence);
-                index = bi.current();
-            }
-        }
-
-        Pattern positive = new Pattern("* Psara *");
+        SentencePattern positive = new SentencePattern("kapitan");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
-        assertEquals(results.size(),3);
+        assertEquals(results.size(),5);
     }
 
     @Test
     public void matchTest(){
         List<String> sentences = new ArrayList<>();
-        sentences.add("sfsf");
-        sentences.add("Kapitan Franklin był na morzu");
+        sentences.add("Kapitan Franklin był na morzu.");
         sentences.add("Jego statek rozbił się");
 
-        Pattern positive = new Pattern("Kapitan *");
+        SentencePattern positive = new SentencePattern("kapitan");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
         assertEquals(results.size(),1);
     }
@@ -84,7 +68,7 @@ public class PageTest {
         String body = doc.body().text();
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
 
-        Pattern positive = new Pattern("*");
+        SentencePattern positive = new SentencePattern("*");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
         assertEquals(results.size(),sentences.size());
     }
@@ -94,7 +78,7 @@ public class PageTest {
         String body = doc.body().text();
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
 
-        Pattern negative = new Pattern("*");
+        SentencePattern negative = new SentencePattern("*");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences,null,negative);
         assertEquals(results.size(),0);
     }

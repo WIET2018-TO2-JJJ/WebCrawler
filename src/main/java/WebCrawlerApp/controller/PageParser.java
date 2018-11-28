@@ -1,7 +1,6 @@
 package WebCrawlerApp.controller;
 
-import WebCrawlerApp.controller.pattern.Pattern;
-import WebCrawlerApp.model.Result;
+import WebCrawlerApp.controller.pattern.SentencePattern;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -14,9 +13,9 @@ import java.util.List;
 
 public class PageParser {
 
-    String queryNegative;
-    String queryPositive;
-    Document document;
+    private String queryNegative;
+    private String queryPositive;
+    private Document document;
 
     public PageParser(String queryPositive, String queryNegative, Document document){
         this.queryPositive = queryPositive;
@@ -25,26 +24,11 @@ public class PageParser {
     }
 
     public List<String> searchForWords(Document document){
-
-        List<String> sentences = new ArrayList<>();
-        Elements elements = document.body().select("p,li").append("\n");
-        BreakIterator bi = BreakIterator.getSentenceInstance();
-
-        for(Element element : elements){
-            bi.setText(element.text());
-            int index = 0;
-            while (bi.next() != BreakIterator.DONE) {
-                String sentence = element.text().substring(index, bi.current());
-                //System.out.println("Sentence: " + sentence);
-                sentences.add(sentence);
-                index = bi.current();
-            }
-        }
-
-        //PatternMatcher patternMatcher = new PatternMatcher();
-        Pattern positivePattern = new Pattern(queryPositive);
-        Pattern negativePattern = new Pattern(queryNegative);
-        return PatternMatcher.matchAgainstPatterns(sentences,positivePattern,null);
+        String body = document.body().text();
+        List<String> sentences = Arrays.asList(body.split("\\. | • "));
+        SentencePattern positiveSentencePattern = new SentencePattern(queryPositive);
+        SentencePattern negativeSentencePattern = new SentencePattern(queryNegative);
+        return PatternMatcher.matchAgainstPatterns(sentences, positiveSentencePattern, negativeSentencePattern);
     }
 
     public Boolean validateUrl(Element element){

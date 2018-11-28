@@ -1,8 +1,9 @@
-version '1.0-SNAPSHOT'
+version '1.0-MILESTONE-1'
 
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 group = 'WebCrawlerApp'
 
@@ -34,4 +35,16 @@ dependencies {
 
 test {
     useJUnit()
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'WebCrawler App',
+                'Implementation-Version': version,
+                'Main-Class': 'WebCrawlerApp.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

@@ -1,15 +1,11 @@
 package WebCrawlerApp.controller;
 
-import WebCrawlerApp.model.Page;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.print.Doc;
 import java.io.IOException;
-import static com.sun.activation.registries.LogSupport.log;
 
 public class PageDownloader {
 

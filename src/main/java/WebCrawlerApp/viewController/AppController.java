@@ -7,12 +7,15 @@ package WebCrawlerApp.viewController;
 
 import WebCrawlerApp.controller.Spider;
 import WebCrawlerApp.model.Search;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -45,6 +48,16 @@ public class AppController {
 
         // add layout to a scene and show them all
         Scene scene = new Scene(rootLayout);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.exit();
+                for(Search search : searches){
+                    search.shutdown();
+                }
+                System.exit(0);
+            }
+        });
         primaryStage.setScene(scene);
         primaryStage.show();
 

@@ -52,6 +52,10 @@ public class MainViewController {
     private TextArea pagesTextArea;
 
     @FXML
+    private  TextField depthTF;
+
+
+    @FXML
     public void initialize(){
         searchesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         searchesColumn.setCellValueFactory(dataValue -> dataValue.getValue().getNameProperty());
@@ -71,13 +75,14 @@ public class MainViewController {
         String queryNegative = queryNegativeTF.getText();
         String searchName = queryName.getText();
         String urlsString = pagesTextArea.getText();
+        Integer depth =  Integer.parseInt(depthTF.getText());
         List<String> tmpURLs = Arrays.asList(urlsString.split(", |\n"));
         List<String> URLs = new ArrayList<String>();
         for(String s : tmpURLs){
             System.out.println(s);
             URLs.add(s);
         }
-        searches.add(new Search(searchName,queryPositive, queryNegative,0, URLs));
+        searches.add(new Search(searchName, queryPositive, queryNegative, depth, URLs));
         appController.showResult(searches.get(searches.size()-1));
         //System.out.println(queryTaken);
     }

@@ -72,7 +72,9 @@
                               <Label layoutX="40.0" layoutY="121.0" text="Positive query" />
                               <Label layoutX="40.0" layoutY="163.0" text="Negative query" />
                               <Label layoutX="66.0" layoutY="276.0" text="Pages:" />
-                              <TextArea fx:id="pagesTextArea" layoutX="140.0" layoutY="219.0" prefHeight="130.0" prefWidth="312.0" />
+                              <TextArea fx:id="pagesTextArea" layoutX="144.0" layoutY="220.0" prefHeight="130.0" prefWidth="312.0" />
+                              <TextField fx:id="depthTF" layoutX="144.0" layoutY="376.0" />
+                              <Label layoutX="62.0" layoutY="381.0" text="Depth:" />
                            </children>
                         </Pane>
                      </center>

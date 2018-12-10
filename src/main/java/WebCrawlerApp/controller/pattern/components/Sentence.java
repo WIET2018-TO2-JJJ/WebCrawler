@@ -1,6 +1,7 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.components;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Sentence implements PatternComponent {
@@ -13,6 +14,10 @@ public class Sentence implements PatternComponent {
 
     public void add(PatternComponent patternComponent) {
         patternComponentList.add(patternComponent);
+    }
+
+    public void addAll(Collection<PatternComponent> patternComponents) {
+        patternComponentList.addAll(patternComponents);
     }
 
     public void remove(PatternComponent patternComponent) {

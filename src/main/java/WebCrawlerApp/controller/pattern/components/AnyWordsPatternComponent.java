@@ -1,4 +1,4 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.components;
 
 public class AnyWordsPatternComponent implements PatternComponent {
     private final int words;

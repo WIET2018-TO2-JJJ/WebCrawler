@@ -3,19 +3,20 @@ import WebCrawlerApp.controller.PageParser;
 import WebCrawlerApp.controller.PatternMatcher;
 import WebCrawlerApp.controller.pattern.SentencePattern;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Test;
-import org.jsoup.nodes.Document;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.format;
 
 public class PageTest {
 
@@ -24,7 +25,7 @@ public class PageTest {
     private PageParser pageParser;
 
     @Before
-    public void setup() throws IOException{
+    public void setup() throws IOException {
         pageDownloader = new PageDownloader();
         File input = new File("./pageForTest/Wikipedia:Strona główna.html");
         doc = Jsoup.parse(input, "UTF-8", "https://pl.wikipedia.org");
@@ -32,54 +33,54 @@ public class PageTest {
     }
 
     @Test
-    public void getURLsTest(){
+    public void getURLsTest() {
         Elements elements = pageDownloader.getURLs();
         List<String> urls = new LinkedList<>();
-        for (Element element : elements){
+        for (Element element : elements) {
             urls.add(element.absUrl("href"));
         }
-        assertEquals(elements.size(),urls.size());
+        assertEquals(elements.size(), urls.size());
     }
 
     @Test
-    public void searchForWordsTest(){
+    public void searchForWordsTest() {
         String body = doc.body().text();
         List<String> sentences = new ArrayList<>();
 
         SentencePattern positive = new SentencePattern("kapitan");
-        List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
-        assertEquals(results.size(),5);
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positive, null);
+        assertEquals(5, results.size());
     }
 
     @Test
-    public void matchTest(){
+    public void matchTest() {
         List<String> sentences = new ArrayList<>();
         sentences.add("Kapitan Franklin był na morzu.");
         sentences.add("Jego statek rozbił się");
 
-        SentencePattern positive = new SentencePattern("kapitan");
-        List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
-        assertEquals(results.size(),1);
+        SentencePattern positive = new SentencePattern("kapitan *");
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positive, null);
+        assertEquals(1, results.size());
     }
 
     @Test
-    public void searchForWordsMatchEverythingTest(){
+    public void searchForWordsMatchEverythingTest() {
         String body = doc.body().text();
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
 
         SentencePattern positive = new SentencePattern("*");
-        List<String> results = PatternMatcher.matchAgainstPatterns(sentences,positive,null);
-        assertEquals(results.size(),sentences.size());
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positive, null);
+        assertEquals(results.size(), sentences.size());
     }
 
     @Test
-    public void searchForWordsMatchNothingTest(){
+    public void searchForWordsMatchNothingTest() {
         String body = doc.body().text();
         List<String> sentences = Arrays.asList(body.split("\\. | • "));
 
         SentencePattern negative = new SentencePattern("*");
-        List<String> results = PatternMatcher.matchAgainstPatterns(sentences,null,negative);
-        assertEquals(results.size(),0);
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, null, negative);
+        assertEquals(0, results.size());
     }
 
 }

@@ -1,4 +1,4 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.components;
 
 import java.util.regex.Pattern;
 

@@ -1,5 +1,5 @@
-import WebCrawlerApp.controller.pattern.Lexer;
-import WebCrawlerApp.controller.pattern.Token;
+import WebCrawlerApp.controller.pattern.lexer.Lexer;
+import WebCrawlerApp.controller.pattern.lexer.Token;
 import org.junit.Before;
 import org.junit.Test;
 

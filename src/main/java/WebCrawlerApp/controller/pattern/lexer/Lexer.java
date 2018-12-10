@@ -1,4 +1,4 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.lexer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

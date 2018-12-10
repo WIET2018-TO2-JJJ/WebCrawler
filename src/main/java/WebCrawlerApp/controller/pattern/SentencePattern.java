@@ -1,14 +1,17 @@
 package WebCrawlerApp.controller.pattern;
 
+import WebCrawlerApp.controller.pattern.components.*;
+import WebCrawlerApp.controller.pattern.lexer.Lexer;
+import WebCrawlerApp.controller.pattern.lexer.Token;
+import WebCrawlerApp.controller.pattern.lexer.TokenType;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SentencePattern {
-    private static final String endOfSentencePattern = "[\\,\\.\\!\\?\\~]*";
-    private static final String afterWordText = "\\s*[\\,\\-\\~]*\\s*";
-    private static final String wildcardPattern = ".*";
     private static final String wordNumberWildcardExtractionPattern = "^.*(?<num>\\d+).*$";
     private Pattern compiledPattern;
 
@@ -29,6 +32,11 @@ public class SentencePattern {
     public boolean match(String input) {
         Matcher m = compiledPattern.matcher(input);
         return m.matches();
+    }
+
+    @Override
+    public String toString() {
+        return compiledPattern.pattern();
     }
 
     private void syntaxCheck(List<Token> tokenList) {
@@ -55,52 +63,64 @@ public class SentencePattern {
         }
     }
 
-    private String regexPatternFromToken(Token token) {
-        switch (token.type) {
-            case WILDCARD:
-                return wildcardPattern;
-            case WORDNUMBERWILDCARD:
-                Matcher matcher = Pattern.compile(wordNumberWildcardExtractionPattern).matcher(token.data);
-                if (!matcher.find()) {
-                    throw new InvalidSyntaxException("Number expected in word number wildcard");
-                }
-                int words = Integer.parseInt(matcher.group("num"));
-                if (words < 1) {
-                    throw new InvalidSyntaxException("Word number wildcard has to have positive number in pattern.");
-                }
-                return String.format("(\\b[\\p{L}_\\-\\/\\d]+%s){%d}", afterWordText, words);
-            case WORD:
-                return "\\b" + Pattern.quote(token.data) + afterWordText;
-            default:
-                throw new IllegalArgumentException("Unexpected token type.");
-        }
-    }
+    private List<PatternComponent> compileTokens(List<Token> tokenList, int begin, int end) {
+        assert (0 <= begin);
+        assert (begin < end);
 
-    private Pattern compile(ArrayList<Token> tokenList, boolean caseInsensitive) {
-        StringBuilder patternStringBuilder = new StringBuilder();
+        List<PatternComponent> components = new LinkedList<>();
 
-        patternStringBuilder.append("^");
-
-        for (Token token : tokenList) {
+        for (int i = begin; i < end; ++i) {
+            Token token = tokenList.get(i);
             switch (token.type) {
                 case WILDCARD:
-                case WORD:
-                case WORDNUMBERWILDCARD:
-                    patternStringBuilder.append(regexPatternFromToken(token));
+                    components.add(new WildcardPatternComponent());
                     break;
-                case PARENTRIGHT:
-                    throw new InvalidSyntaxException("Unexpected parentheses closing without opening.");
-                case OR:
-                    patternStringBuilder.append("|");
+                case WORDNUMBERWILDCARD:
+                    Matcher matcher = Pattern.compile(wordNumberWildcardExtractionPattern).matcher(token.data);
+                    if (!matcher.find()) {
+                        throw new InvalidSyntaxException("Number expected in word number wildcard");
+                    }
+                    int words = Integer.parseInt(matcher.group("num"));
+                    if (words < 1) {
+                        throw new InvalidSyntaxException("Word number wildcard has to have positive number in pattern.");
+                    }
+                    components.add(new AnyWordsPatternComponent(words));
+                    break;
+                case WORD:
+                    components.add(new LiteralWord(token.data));
+                    break;
+                case PARENTLEFT:
+                    int newEnd = begin;
+                    int depth = 1;
+                    for(int j = i+1; j < end && depth > 0; ++j) {
+                        TokenType tt = tokenList.get(j).type;
+                        if(tt == TokenType.PARENTLEFT) {
+                            depth += 1;
+                        } else if (tt == TokenType.PARENTRIGHT) {
+                            depth -= 1;
+                        }
+
+                        newEnd = j + 1;
+                    }
+                    AlternativeParentheses alternativeParentheses = new AlternativeParentheses();
+                    alternativeParentheses.addAll(compileTokens(tokenList, i+1, newEnd));
+                    components.add(alternativeParentheses);
+                    i = newEnd;
                     break;
                 default:
-                    throw new InvalidSyntaxException("Unexpected token type: " + token.type.name());
+                    // omit OR, WHITESPACE, RIGHTPAR
+                    break;
             }
         }
 
-        patternStringBuilder.append(endOfSentencePattern + "$");
+        return components;
+    }
 
-        return Pattern.compile(patternStringBuilder.toString(),
+    private Pattern compile(ArrayList<Token> tokenList, boolean caseInsensitive) {
+        Sentence s = new Sentence();
+        s.addAll(compileTokens(tokenList, 0, tokenList.size()));
+
+        return Pattern.compile(s.toFullRegexpPatternString(),
                 caseInsensitive ? Pattern.CASE_INSENSITIVE : 0);
     }
 

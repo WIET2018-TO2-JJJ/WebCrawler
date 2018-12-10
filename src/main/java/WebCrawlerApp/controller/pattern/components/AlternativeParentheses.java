@@ -1,18 +1,23 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.components;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Alternative implements PatternComponent {
+public class AlternativeParentheses implements PatternComponent {
     private List<PatternComponent> patternComponentList = new ArrayList<>();
 
-    public Alternative() {
+    public AlternativeParentheses() {
 
     }
 
     public void add(PatternComponent patternComponent) {
         patternComponentList.add(patternComponent);
+    }
+
+    public void addAll(Collection<PatternComponent> patternComponents) {
+        patternComponentList.addAll(patternComponents);
     }
 
     public void remove(PatternComponent patternComponent) {

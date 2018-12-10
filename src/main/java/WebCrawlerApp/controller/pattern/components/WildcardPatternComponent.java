@@ -1,4 +1,4 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.components;
 
 public class WildcardPatternComponent implements PatternComponent {
     public WildcardPatternComponent() {

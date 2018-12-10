@@ -15,12 +15,10 @@ public class PageParser {
 
     private String queryNegative;
     private String queryPositive;
-    private Document document;
 
-    public PageParser(String queryPositive, String queryNegative, Document document){
+    public PageParser(String queryPositive, String queryNegative){
         this.queryPositive = queryPositive;
         this.queryNegative = queryNegative;
-        this.document = document;
     }
 
     public List<String> searchForWords(Document document){
@@ -30,9 +28,4 @@ public class PageParser {
         SentencePattern negativeSentencePattern = new SentencePattern(queryNegative);
         return PatternMatcher.matchAgainstPatterns(sentences, positiveSentencePattern, negativeSentencePattern);
     }
-
-    public Boolean validateUrl(Element element){
-        return element.absUrl("href").contains(document.baseUri());
-    }
-
 }

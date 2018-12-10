@@ -21,18 +21,11 @@ public class Spider {
             @Override
             public void onChanged(Change<? extends Search> c) {
                 //System.out.println(searches.get(searches.size()-1).getName());
-                makeSearch(searches.size()-1);
+                //makeSearch(searches.size()-1);
+                searches.get(searches.size()-1).search();
             }
         });
     }
-
-
-    public void makeSearch(int index){
-        if(index < searches.size()){
-            searches.get(index).search();
-        }
-    }
-
     public ObservableList<Search> getSearches() {
         return searches;
     }

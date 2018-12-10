@@ -47,7 +47,7 @@
                <bottom>
                   <BorderPane prefHeight="438.0" prefWidth="548.0" BorderPane.alignment="CENTER">
                      <center>
-                        <Pane prefHeight="426.0" prefWidth="549.0" style="-: rgba(230,230,230,0.25);" BorderPane.alignment="CENTER">
+                        <Pane prefHeight="402.0" prefWidth="548.0" style="-: rgba(230,230,230,0.25);" BorderPane.alignment="CENTER">
                            <children>
                               <Label alignment="CENTER" layoutX="52.0" layoutY="60.0" text="What do you want to crawl?">
                                  <font>
@@ -72,8 +72,8 @@
                               <Label layoutX="40.0" layoutY="121.0" text="Positive query" />
                               <Label layoutX="40.0" layoutY="163.0" text="Negative query" />
                               <Label layoutX="66.0" layoutY="276.0" text="Pages:" />
-                              <TextArea fx:id="pagesTextArea" layoutX="144.0" layoutY="220.0" prefHeight="130.0" prefWidth="312.0" />
-                              <TextField fx:id="depthTF" layoutX="144.0" layoutY="376.0" />
+                              <TextArea fx:id="pagesTextArea" layoutX="144.0" layoutY="220.0" prefHeight="130.0" prefWidth="312.0" promptText="https://www.onet.pl" />
+                              <TextField fx:id="depthTF" layoutX="144.0" layoutY="376.0" promptText="1" />
                               <Label layoutX="62.0" layoutY="381.0" text="Depth:" />
                            </children>
                         </Pane>

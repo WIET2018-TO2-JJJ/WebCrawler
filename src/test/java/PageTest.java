@@ -52,7 +52,7 @@ public class PageTest {
     public void matchTest() {
         List<String> sentences = new ArrayList<>();
         sentences.add("Kapitan Franklin był na morzu.");
-        sentences.add("Jego statek rozbił się.");
+        sentences.add("Jego statek rozbił się");
 
         SentencePattern positive = new SentencePattern("kapitan *");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positive, null);

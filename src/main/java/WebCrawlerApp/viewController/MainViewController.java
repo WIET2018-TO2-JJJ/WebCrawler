@@ -75,7 +75,12 @@ public class MainViewController {
         String queryNegative = queryNegativeTF.getText();
         String searchName = queryName.getText();
         String urlsString = pagesTextArea.getText();
-        Integer depth =  Integer.parseInt(depthTF.getText());
+        Integer depth;
+        if(depthTF.getText().equals("")){
+            depth = 1;
+        } else {
+            depth =  Integer.parseInt(depthTF.getText());
+        }
         List<String> tmpURLs = Arrays.asList(urlsString.split(", |\n"));
         List<String> URLs = new ArrayList<String>();
         for(String s : tmpURLs){

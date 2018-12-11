@@ -1,4 +1,4 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.lexer;
 
 public enum TokenType {
     WHITESPACE("\\s"),

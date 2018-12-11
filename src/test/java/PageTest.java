@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class PageTest {
 
     @Test
     public void getURLsTest() {
+        Elements elements = pageDownloader.getURLs();
         List<String> urls = new LinkedList<>();
         for (Element element : elements) {
             urls.add(element.absUrl("href"));
@@ -40,12 +42,12 @@ public class PageTest {
 
     @Test
     public void searchForWordsTest() {
-        List<String> sentences;
-        String positive = "* artykuł *";
-        String negative = "* dobry *";
-        pageParser = new PageParser(positive,negative);
-        sentences = pageParser.searchForWords(doc);
-        assertEquals(8, sentences.size());
+        String body = doc.body().text();
+        List<String> sentences = new ArrayList<>();
+
+        SentencePattern positive = new SentencePattern("kapitan");
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positive, null);
+        assertEquals(5, results.size());
     }
 
     @Test

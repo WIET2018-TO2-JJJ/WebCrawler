@@ -1,4 +1,4 @@
-package WebCrawlerApp.controller.pattern;
+package WebCrawlerApp.controller.pattern.lexer;
 
 public class Token {
     public final TokenType type;

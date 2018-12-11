@@ -19,6 +19,9 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainViewController {
@@ -45,6 +48,12 @@ public class MainViewController {
     @FXML
     private TextField queryNegativeTF;
 
+    @FXML
+    private TextArea pagesTextArea;
+
+    @FXML
+    private  TextField depthTF;
+
 
     @FXML
     public void initialize(){
@@ -65,7 +74,20 @@ public class MainViewController {
         String queryPositive = queryPositiveTF.getText();
         String queryNegative = queryNegativeTF.getText();
         String searchName = queryName.getText();
-        searches.add(new Search(searchName,queryPositive, queryNegative,0));
+        String urlsString = pagesTextArea.getText();
+        Integer depth;
+        if(depthTF.getText().equals("")){
+            depth = 1;
+        } else {
+            depth =  Integer.parseInt(depthTF.getText());
+        }
+        List<String> tmpURLs = Arrays.asList(urlsString.split(", |\n"));
+        List<String> URLs = new ArrayList<String>();
+        for(String s : tmpURLs){
+            System.out.println(s);
+            URLs.add(s);
+        }
+        searches.add(new Search(searchName, queryPositive, queryNegative, depth, URLs));
         appController.showResult(searches.get(searches.size()-1));
         //System.out.println(queryTaken);
     }

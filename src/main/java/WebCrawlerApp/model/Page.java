@@ -3,13 +3,15 @@ package WebCrawlerApp.model;
 import javafx.scene.input.DataFormat;
 
 public class Page {
-    String URL;
-    String signature;
-    Integer depth;
+    private String URL;
+    private Integer depth;
 
-    public Page(String URL, String signature,Integer depth){
+    public Page(String URL, Integer depth){
         this.URL = URL;
-        this.signature = signature;
         this.depth = depth;
+    }
+
+    public String getURL() {
+        return URL;
     }
 }

@@ -1,4 +1,3 @@
-import WebCrawlerApp.controller.PageDownloader;
 import WebCrawlerApp.controller.PageParser;
 import WebCrawlerApp.controller.PatternMatcher;
 import WebCrawlerApp.controller.pattern.SentencePattern;
@@ -20,16 +19,15 @@ import static junit.framework.TestCase.assertEquals;
 
 public class PageTest {
 
-    private PageDownloader pageDownloader;
     private Document doc;
     private PageParser pageParser;
+    private Elements elements;
 
     @Before
     public void setup() throws IOException {
-        pageDownloader = new PageDownloader();
         File input = new File("./pageForTest/Wikipedia:Strona główna.html");
         doc = Jsoup.parse(input, "UTF-8", "https://pl.wikipedia.org");
-        pageDownloader.setDocument(doc);
+        elements = doc.select("a[href]");
     }
 
     @Test

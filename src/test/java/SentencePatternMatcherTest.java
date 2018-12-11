@@ -15,10 +15,10 @@ public class SentencePatternMatcherTest {
         list.add("fdads fdassdf");
         list.add("asd sdf dfg");
         list.add("asd sdf dfg fdg");
-
         SentencePattern p = new SentencePattern("(<1> | <3>");
         List<String> res = PatternMatcher.matchAgainstPatterns(list, p, null);
         assertEquals(2, res.size());
+
     }
 
     @Test
@@ -48,5 +48,6 @@ public class SentencePatternMatcherTest {
         List<String> res = PatternMatcher.matchAgainstPatterns(list, p, null);
 
         assertEquals(2, res.size());
+
     }
 }

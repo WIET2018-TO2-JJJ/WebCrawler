@@ -43,6 +43,9 @@ public class ResultsViewController {
     @FXML
     private TableColumn<Result, String> sentenceColumn;
 
+    @FXML
+    private Button showDiagramButton;
+
 
     @FXML
     public void initialize(){
@@ -56,12 +59,16 @@ public class ResultsViewController {
         });
         urlColumn.setCellValueFactory(result -> result.getValue().getURLProperty());
         sentenceColumn.setCellValueFactory(result -> result.getValue().getSentenceProperty());
-
     }
 
     @FXML
     private void handleNewSearchButton(ActionEvent event) throws IOException {
         appController.showMainView();
+    }
+
+    @FXML
+    private void handleShowDiagram(ActionEvent event){
+        System.out.println("SHOW DIAGRAM CLICKED");
     }
 
     public void setAppController(AppController appController) {

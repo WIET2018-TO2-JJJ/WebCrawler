@@ -38,6 +38,16 @@ will match against
 
 `Money is root of all evil.`
 
+=======
+## Query language
+\*    - anything <br/>
+text  - search for word 'text' : Letter case sensitive <br/>
+\<N>  - match N words <br/>
+|     - logical OR <br/>
+()    - brackets <br/>
+  
+Example: <5> (word1 | word2) means match any five words and then must be word1 OR word2
+
 
 ### License
 Icons made by [Freepik](https://www.freepik.com) from [Flaticon](https://www.flaticon.com/) 

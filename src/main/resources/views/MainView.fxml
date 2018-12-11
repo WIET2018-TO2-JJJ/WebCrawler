@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -46,28 +47,34 @@
                <bottom>
                   <BorderPane prefHeight="438.0" prefWidth="548.0" BorderPane.alignment="CENTER">
                      <center>
-                        <Pane prefHeight="426.0" prefWidth="549.0" style="-: rgba(230,230,230,0.25);" BorderPane.alignment="CENTER">
+                        <Pane prefHeight="402.0" prefWidth="548.0" style="-: rgba(230,230,230,0.25);" BorderPane.alignment="CENTER">
                            <children>
-                              <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" text="What do you want to crawl?">
+                              <Label alignment="CENTER" layoutX="52.0" layoutY="60.0" text="What do you want to crawl?">
                                  <font>
-                                    <Font size="16.0" />
+                                    <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="queryEnteredButton" layoutX="325.0" layoutY="118.0" mnemonicParsing="false" onAction="#handleQueryEnteredAction" text="search">
+                              <Button fx:id="queryEnteredButton" layoutX="384.0" layoutY="130.0" mnemonicParsing="false" onAction="#handleQueryEnteredAction" text="search">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Button>
-                              <TextField fx:id="queryPositiveTF" layoutX="75.0" layoutY="103.0" prefHeight="29.0" prefWidth="192.0">
+                              <TextField fx:id="queryPositiveTF" layoutX="144.0" layoutY="115.0" prefHeight="29.0" prefWidth="225.0">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </TextField>
-                              <TextField fx:id="queryNegativeTF" layoutX="75.0" layoutY="145.0" prefHeight="29.0" prefWidth="192.0">
+                              <TextField fx:id="queryNegativeTF" layoutX="144.0" layoutY="157.0" prefHeight="29.0" prefWidth="225.0">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </TextField>
+                              <Label layoutX="40.0" layoutY="121.0" text="Positive query" />
+                              <Label layoutX="40.0" layoutY="163.0" text="Negative query" />
+                              <Label layoutX="66.0" layoutY="276.0" text="Pages:" />
+                              <TextArea fx:id="pagesTextArea" layoutX="144.0" layoutY="220.0" prefHeight="130.0" prefWidth="312.0" promptText="https://www.onet.pl" />
+                              <TextField fx:id="depthTF" layoutX="144.0" layoutY="376.0" promptText="1" />
+                              <Label layoutX="62.0" layoutY="381.0" text="Depth:" />
                            </children>
                         </Pane>
                      </center>

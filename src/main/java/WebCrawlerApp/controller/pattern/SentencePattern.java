@@ -1,12 +1,12 @@
 package WebCrawlerApp.controller.pattern;
 
+
 import WebCrawlerApp.controller.pattern.components.*;
 import WebCrawlerApp.controller.pattern.lexer.Lexer;
 import WebCrawlerApp.controller.pattern.lexer.Token;
 import WebCrawlerApp.controller.pattern.lexer.TokenType;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -121,6 +121,7 @@ public class SentencePattern {
         s.addAll(compileTokens(tokenList, 0, tokenList.size()));
 
         return Pattern.compile(s.toFullRegexpPatternString(),
+
                 caseInsensitive ? Pattern.CASE_INSENSITIVE : 0);
     }
 

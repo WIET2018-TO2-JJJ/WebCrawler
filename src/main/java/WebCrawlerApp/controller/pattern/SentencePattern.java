@@ -100,8 +100,10 @@ public class SentencePattern {
                             depth -= 1;
                         }
 
-                        newEnd = j + 1;
+                        newEnd = j;
                     }
+                    newEnd += 1;
+                    // TODO: zmenić kompilację na uwzględnianie alternatywy dla ciągów tokenów (split by `|`)
                     AlternativeParentheses alternativeParentheses = new AlternativeParentheses();
                     alternativeParentheses.addAll(compileTokens(tokenList, i+1, newEnd));
                     components.add(alternativeParentheses);

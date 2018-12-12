@@ -25,8 +25,8 @@ public class Crawler implements Runnable{
     private String baseURL;
     private Integer depth;
     private ObservableList<Result> results;
-    private List<String> pagesToVisit;
-    private HashMap<String,Page> pagesVisited;
+    private List<String> pagesToVisit = new ArrayList<>();
+    private HashMap<String,Page> pagesVisited = new HashMap<>();
     private String queryPositive;
     private String queryNegative;
 
@@ -36,9 +36,7 @@ public class Crawler implements Runnable{
         this.baseURL = baseURL;
         this.depth = depth;
         this.results = results;
-        this.pagesToVisit = new ArrayList<>();
         pagesToVisit.add(baseURL);
-        pagesVisited = new HashMap<>();
     }
 
     private Document downloadPage(String URL){

@@ -27,7 +27,8 @@ public class Search {
     private ExecutorService service;
 
 
-
+    // TODO: Agregat do wszystkich Stringów
+    // TODO: Pzechować datę wyszukiwania
     public Search(String name, String queryPositive, String queryNegative, Integer acctualDepth, List<String> pagesToVisit) {
         this.name = new SimpleStringProperty(name);
         this.pagesToVisit = pagesToVisit;

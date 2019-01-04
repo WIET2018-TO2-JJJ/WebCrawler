@@ -1,4 +1,4 @@
-import WebCrawlerApp.controller.PageParser;
+import WebCrawlerApp.controller.PageProcessor;
 import WebCrawlerApp.controller.PatternMatcher;
 import WebCrawlerApp.controller.pattern.SentencePattern;
 import org.jsoup.Jsoup;
@@ -19,7 +19,7 @@ import static junit.framework.TestCase.assertEquals;
 public class PageTest {
 
     private Document doc;
-    private PageParser pageParser;
+    private PageProcessor pageProcessor;
     private Elements elements;
 
     @Before
@@ -43,9 +43,9 @@ public class PageTest {
         List<String> sentences;
         String positive = "* artykuł *";
         String negative = "* dobry *";
-        pageParser = new PageParser(positive,negative);
-        sentences = pageParser.searchForWords(doc);
-        assertEquals(8, sentences.size());
+        pageProcessor = new PageProcessor(new SentencePattern(positive), new SentencePattern(negative));
+        sentences = pageProcessor.searchForWords(doc);
+        assertEquals(5, sentences.size());
     }
 
     @Test

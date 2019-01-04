@@ -5,11 +5,10 @@
 package WebCrawlerApp.controller;
 
 
+import WebCrawlerApp.controller.pattern.SentencePattern;
 import WebCrawlerApp.model.Page;
 import WebCrawlerApp.model.Result;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,12 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Crawler implements Runnable{
+public class Crawler implements Runnable {
     private String baseURL;
     private Integer depth;
     private ObservableList<Result> results;
     private List<String> pagesToVisit = new ArrayList<>();
-    private HashMap<String,Page> pagesVisited = new HashMap<>();
+    private HashMap<String, Page> pagesVisited = new HashMap<>();
     private String queryPositive;
     private String queryNegative;
 
@@ -39,7 +38,7 @@ public class Crawler implements Runnable{
         pagesToVisit.add(baseURL);
     }
 
-    private Document downloadPage(String URL){
+    private Document downloadPage(String URL) {
         Connection connection = Jsoup.connect(URL);
         Document document = null;
         try {
@@ -52,10 +51,12 @@ public class Crawler implements Runnable{
     }
 
     @Override
-    public void run(){
+    public void run() {
         List<String> levelURLs = new ArrayList<>();
-        for(int i=depth; i>0; i--){
-            while(!pagesToVisit.isEmpty()) {
+        SentencePattern positivePattern = new SentencePattern(queryPositive);
+        SentencePattern negativePattern = new SentencePattern(queryNegative);
+        for (int i = depth; i > 0; i--) {
+            while (!pagesToVisit.isEmpty()) {
                 if (!pagesVisited.containsKey(pagesToVisit.get(0))) {
                     Page page = new Page(pagesToVisit.get(0), i);
                     pagesToVisit.remove(0);
@@ -63,13 +64,13 @@ public class Crawler implements Runnable{
                     Document doc = downloadPage(page.getURL());
                     Elements links = doc.select("a[href]");     // getURLs()
 
-                    PageParser pageParser = new PageParser(queryPositive, queryNegative);
+                    PageProcessor pageProcessor = new PageProcessor(positivePattern, negativePattern);
 
                     for (Element link : links) {
                         levelURLs.add(link.absUrl("href"));
                     }
 
-                    List<String> sentences = pageParser.searchForWords(doc);
+                    List<String> sentences = pageProcessor.searchForWords(doc);
                     for (String sentence : sentences) {
                         Result result = new Result(page.getURL(), sentence);
                         results.add(result);

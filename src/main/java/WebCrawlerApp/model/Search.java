@@ -16,7 +16,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Search {
-
     private List<String> pagesToVisit;
     private Integer depth;
     private String queryPositive;

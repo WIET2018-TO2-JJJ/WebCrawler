@@ -66,7 +66,7 @@ public class SentencePattern {
 
     private List<PatternComponent> compileTokens(List<Token> tokenList, int begin, int end) {
         assert (0 <= begin);
-        assert (begin < end);
+        assert (begin <= end);
 
         List<PatternComponent> components = new LinkedList<>();
 

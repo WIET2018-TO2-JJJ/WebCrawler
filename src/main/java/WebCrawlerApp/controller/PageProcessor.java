@@ -9,26 +9,24 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-// TODO: zmienić na PageProcessor
-public class PageParser {
+public class PageProcessor {
 
-    private String queryNegative; // TODO: niepotrzebne
-    private String queryPositive; // TODO: niepotrzebne
+    private SentencePattern positiveSentencePattern; // TODO: niepotrzebne
+    private SentencePattern negativeSentencePattern; // TODO: niepotrzebne
 
-    // TODO: przekazywać SentencePatterny
-    public PageParser(String queryPositive, String queryNegative){
-        this.queryPositive = queryPositive;
-        this.queryNegative = queryNegative;
+    public PageProcessor(SentencePattern queryPositivePattern, SentencePattern queryNegativePattern){
+        this.positiveSentencePattern = queryPositivePattern;
+        this.negativeSentencePattern = queryNegativePattern;
     }
 
-    // TODO: wyciągnąć SentencePAttern'y w górę abstrakcji
+    // TODO: wyciągnąć SentencePattern'y w górę abstrakcji
 
     public List<String> searchForWords(Document document){
-        // TODO: https://stackoverflow.com/a/2687929/3546683
         List<String> sentences = new ArrayList<>();
         Elements elements = document.body().select("p,li").append("\n");
-        BreakIterator bi = BreakIterator.getSentenceInstance();
+        BreakIterator bi = BreakIterator.getSentenceInstance(new Locale("pl"));
 
         for(Element element : elements) {
             bi.setText(element.text());
@@ -41,8 +39,6 @@ public class PageParser {
             }
         }
 
-        SentencePattern positiveSentencePattern = new SentencePattern(queryPositive);
-        SentencePattern negativeSentencePattern = new SentencePattern(queryNegative);
         return PatternMatcher.matchAgainstPatterns(sentences, positiveSentencePattern, negativeSentencePattern);
     }
 }

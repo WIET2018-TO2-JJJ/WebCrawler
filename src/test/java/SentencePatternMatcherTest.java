@@ -15,10 +15,9 @@ public class SentencePatternMatcherTest {
         list.add("fdads fdassdf");
         list.add("asd sdf dfg");
         list.add("asd sdf dfg fdg");
-        SentencePattern p = new SentencePattern("(<1> | <3>");
+        SentencePattern p = new SentencePattern("(<1> | <3>)");
         List<String> res = PatternMatcher.matchAgainstPatterns(list, p, null);
         assertEquals(2, res.size());
-
     }
 
     @Test
@@ -48,6 +47,17 @@ public class SentencePatternMatcherTest {
         List<String> res = PatternMatcher.matchAgainstPatterns(list, p, null);
 
         assertEquals(2, res.size());
+    }
 
+    @Test
+    public void complexParenthesesAndAlternativeTest() {
+        List<String> list = new ArrayList<>();
+        list.add("My home in Rome has dome.");
+        list.add("Rome has home with best dome.");
+
+        SentencePattern p = new SentencePattern("* (home | rome | dome) * (home | rome | dome) *");
+        List<String> res = PatternMatcher.matchAgainstPatterns(list, p, null);
+
+        assertEquals(2, res.size());
     }
 }

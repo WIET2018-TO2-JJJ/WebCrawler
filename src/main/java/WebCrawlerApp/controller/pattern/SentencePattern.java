@@ -5,8 +5,9 @@ import WebCrawlerApp.controller.pattern.components.*;
 import WebCrawlerApp.controller.pattern.lexer.Lexer;
 import WebCrawlerApp.controller.pattern.lexer.Token;
 import WebCrawlerApp.controller.pattern.lexer.TokenType;
-import java.util.LinkedList;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,7 +70,7 @@ public class SentencePattern {
 
         List<PatternComponent> components = new LinkedList<>();
 
-        for (int i = begin; i < end; ++i) {
+        for (int i = begin; i <= end; ++i) {
             Token token = tokenList.get(i);
             switch (token.type) {
                 case WILDCARD:
@@ -89,26 +90,40 @@ public class SentencePattern {
                 case WORD:
                     components.add(new LiteralWord(token.data));
                     break;
-                case PARENTLEFT:
+                case PARENTLEFT: {
                     int newEnd = begin;
                     int depth = 1;
-                    for(int j = i+1; j < end && depth > 0; ++j) {
+                    for (int j = i + 1; j <= end && depth > 0; ++j) {
                         TokenType tt = tokenList.get(j).type;
-                        if(tt == TokenType.PARENTLEFT) {
+                        if (tt == TokenType.PARENTLEFT) {
                             depth += 1;
                         } else if (tt == TokenType.PARENTRIGHT) {
                             depth -= 1;
                         }
-
                         newEnd = j;
                     }
-                    newEnd += 1;
-                    // TODO: zmenić kompilację na uwzględnianie alternatywy dla ciągów tokenów (split by `|`)
+
                     AlternativeParentheses alternativeParentheses = new AlternativeParentheses();
-                    alternativeParentheses.addAll(compileTokens(tokenList, i+1, newEnd));
+
+                    // split by |
+                    int partStart = i + 1;
+                    for (int j = i + 1; j <= newEnd; ++j) {
+                        TokenType tt = tokenList.get(j).type;
+                        if (tt == TokenType.OR || (j == newEnd && tt == TokenType.PARENTRIGHT && partStart < j)) {
+                            PatternSequence patternSequence = new PatternSequence();
+
+                            patternSequence.addAll(compileTokens(tokenList, partStart, j));
+
+                            alternativeParentheses.add(patternSequence);
+
+                            partStart = j + 1;
+                        }
+                    }
+
                     components.add(alternativeParentheses);
                     i = newEnd;
                     break;
+                }
                 default:
                     // omit OR, WHITESPACE, RIGHTPAR
                     break;
@@ -120,7 +135,7 @@ public class SentencePattern {
 
     private Pattern compile(ArrayList<Token> tokenList, boolean caseInsensitive) {
         Sentence s = new Sentence();
-        s.addAll(compileTokens(tokenList, 0, tokenList.size()));
+        s.addAll(compileTokens(tokenList, 0, tokenList.size() - 1));
 
         return Pattern.compile(s.toFullRegexpPatternString(),
 

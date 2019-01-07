@@ -1,6 +1,7 @@
 import WebCrawlerApp.controller.PageProcessor;
 import WebCrawlerApp.controller.PatternMatcher;
 import WebCrawlerApp.controller.pattern.SentencePattern;
+import WebCrawlerApp.model.Query;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,10 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.text.BreakIterator;
+import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -41,9 +40,8 @@ public class PageTest {
     @Test
     public void searchForWordsTest() {
         List<String> sentences;
-        String positive = "* artykuł *";
-        String negative = "* dobry *";
-        pageProcessor = new PageProcessor(new SentencePattern(positive), new SentencePattern(negative));
+        Query query = new Query("* artykuł *", "* dobry *");
+        pageProcessor = new PageProcessor(query);
         sentences = pageProcessor.searchForWords(doc);
         assertEquals(5, sentences.size());
     }
@@ -53,7 +51,6 @@ public class PageTest {
         List<String> sentences = new ArrayList<>();
         sentences.add("Kapitan Franklin był na morzu.");
         sentences.add("Jego statek rozbił się.");
-
         SentencePattern positive = new SentencePattern("kapitan *");
         List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positive, null);
         assertEquals(1, results.size());
@@ -61,21 +58,43 @@ public class PageTest {
 
     @Test
     public void searchForWordsMatchEverythingTest() {
-        String body = doc.body().text();
-        List<String> sentences = Arrays.asList(body.split("\\. | • "));
+        SentencePattern positivePattern = new SentencePattern("*");
+        List<String> sentences = new ArrayList<>();
+        Elements elements = doc.body().select("p,li").append("\n");
+        BreakIterator bi = BreakIterator.getSentenceInstance(new Locale("pl"));
 
-        SentencePattern positive = new SentencePattern("*");
-        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positive, null);
-        assertEquals(results.size(), sentences.size());
+        for(Element element : elements) {
+            bi.setText(element.text());
+            int index = 0;
+            while (bi.next() != BreakIterator.DONE) {
+                String sentence = element.text().substring(index, bi.current());
+                System.out.println("Sentence: " + sentence);
+                sentences.add(sentence);
+                index = bi.current();
+            }
+        }
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, positivePattern, null);
+        assertEquals(sentences.size(), results.size());
     }
 
     @Test
     public void searchForWordsMatchNothingTest() {
-        String body = doc.body().text();
-        List<String> sentences = Arrays.asList(body.split("\\. | • "));
+        SentencePattern negativePattern = new SentencePattern("*");
+        List<String> sentences = new ArrayList<>();
+        Elements elements = doc.body().select("p,li").append("\n");
+        BreakIterator bi = BreakIterator.getSentenceInstance(new Locale("pl"));
 
-        SentencePattern negative = new SentencePattern("*");
-        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, null, negative);
+        for(Element element : elements) {
+            bi.setText(element.text());
+            int index = 0;
+            while (bi.next() != BreakIterator.DONE) {
+                String sentence = element.text().substring(index, bi.current());
+                System.out.println("Sentence: " + sentence);
+                sentences.add(sentence);
+                index = bi.current();
+            }
+        }
+        List<String> results = PatternMatcher.matchAgainstPatterns(sentences, null, negativePattern);
         assertEquals(0, results.size());
     }
 

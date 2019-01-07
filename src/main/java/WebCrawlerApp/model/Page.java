@@ -14,4 +14,5 @@ public class Page {
     public String getURL() {
         return URL;
     }
+    public Integer getDepth() { return depth; }
 }

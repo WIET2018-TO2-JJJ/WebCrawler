@@ -1,10 +1,12 @@
 package WebCrawlerApp.controller;
 
 import WebCrawlerApp.controller.pattern.SentencePattern;
+import WebCrawlerApp.model.Query;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.awt.geom.QuadCurve2D;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,15 +15,11 @@ import java.util.Locale;
 
 public class PageProcessor {
 
-    private SentencePattern positiveSentencePattern; // TODO: niepotrzebne
-    private SentencePattern negativeSentencePattern; // TODO: niepotrzebne
+    private Query query;
 
-    public PageProcessor(SentencePattern queryPositivePattern, SentencePattern queryNegativePattern){
-        this.positiveSentencePattern = queryPositivePattern;
-        this.negativeSentencePattern = queryNegativePattern;
+    public PageProcessor(Query query){
+        this.query = query;
     }
-
-    // TODO: wyciągnąć SentencePattern'y w górę abstrakcji
 
     public List<String> searchForWords(Document document){
         List<String> sentences = new ArrayList<>();
@@ -39,6 +37,6 @@ public class PageProcessor {
             }
         }
 
-        return PatternMatcher.matchAgainstPatterns(sentences, positiveSentencePattern, negativeSentencePattern);
+        return PatternMatcher.matchAgainstPatterns(sentences, query.getPositivePattern(), query.getNegativePattern());
     }
 }

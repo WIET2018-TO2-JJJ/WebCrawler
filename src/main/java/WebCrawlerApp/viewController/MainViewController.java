@@ -6,6 +6,7 @@ package WebCrawlerApp.viewController;
 
 
 
+import WebCrawlerApp.model.Query;
 import WebCrawlerApp.model.Search;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
@@ -87,7 +88,8 @@ public class MainViewController {
             System.out.println(s);
             URLs.add(s);
         }
-        searches.add(new Search(searchName, queryPositive, queryNegative, depth, URLs));
+        Query query = new Query(queryPositive,queryNegative);
+        searches.add(new Search(searchName, query, depth, URLs));
         appController.showResult(searches.get(searches.size()-1));
         //System.out.println(queryTaken);
     }

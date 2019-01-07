@@ -7,6 +7,7 @@ package WebCrawlerApp.controller;
 
 import WebCrawlerApp.controller.pattern.SentencePattern;
 import WebCrawlerApp.model.Page;
+import WebCrawlerApp.model.Query;
 import WebCrawlerApp.model.Result;
 import javafx.collections.ObservableList;
 import org.jsoup.Connection;
@@ -21,21 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Crawler implements Runnable {
-    private String baseURL;
-    private Integer depth;
+    private Page page;
     private ObservableList<Result> results;
     private List<String> pagesToVisit = new ArrayList<>();
     private HashMap<String, Page> pagesVisited = new HashMap<>();
-    private String queryPositive;
-    private String queryNegative;
+    private Query query;
 
-    public Crawler(String baseURL, Integer depth, String queryNegative, String queryPositive, ObservableList<Result> results) {
-        this.queryNegative = queryNegative;
-        this.queryPositive = queryPositive;
-        this.baseURL = baseURL;
-        this.depth = depth;
+    public Crawler(Page startPage, Query query, ObservableList<Result> results) {
+        this.query = query;
+        this.page = startPage;
         this.results = results;
-        pagesToVisit.add(baseURL);
+        pagesToVisit.add(page.getURL());
     }
 
     private Document downloadPage(String URL) {
@@ -46,25 +43,23 @@ public class Crawler implements Runnable {
         } catch (IOException e) {
             System.out.println("connection error");
         }
-        //System.out.println(document.text());
         return document;
     }
 
     @Override
     public void run() {
         List<String> levelURLs = new ArrayList<>();
-        SentencePattern positivePattern = new SentencePattern(queryPositive);
-        SentencePattern negativePattern = new SentencePattern(queryNegative);
-        for (int i = depth; i > 0; i--) {
+
+        for (int i = page.getDepth(); i > 0; i--) {
             while (!pagesToVisit.isEmpty()) {
                 if (!pagesVisited.containsKey(pagesToVisit.get(0))) {
                     Page page = new Page(pagesToVisit.get(0), i);
                     pagesToVisit.remove(0);
                     pagesVisited.put(page.getURL(), page);
                     Document doc = downloadPage(page.getURL());
-                    Elements links = doc.select("a[href]");     // getURLs()
+                    Elements links = doc.select("a[href]");
 
-                    PageProcessor pageProcessor = new PageProcessor(positivePattern, negativePattern);
+                    PageProcessor pageProcessor = new PageProcessor(query);
 
                     for (Element link : links) {
                         levelURLs.add(link.absUrl("href"));

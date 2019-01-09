@@ -134,6 +134,11 @@ public class SentencePattern {
     }
 
     private Pattern compile(ArrayList<Token> tokenList, boolean caseInsensitive) {
+        if(tokenList.size() == 0){
+            return Pattern.compile("",
+
+                    caseInsensitive ? Pattern.CASE_INSENSITIVE : 0);
+        }
         Sentence s = new Sentence();
         s.addAll(compileTokens(tokenList, 0, tokenList.size() - 1));
 

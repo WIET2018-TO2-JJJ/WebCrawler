@@ -53,12 +53,4 @@ public class SessionService {
         return searches;
     }
 
-    public void update(Search search){
-        session = sessionFactory.openSession();
-        tx = session.beginTransaction();
-        search.addResultsToSet();
-        tx.commit();
-        session.close();
-    }
-
 }

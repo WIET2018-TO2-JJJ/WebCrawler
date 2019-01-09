@@ -10,9 +10,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +27,7 @@ public class Search {
     private ObservableList<Result> results;
     private StringProperty name;
     private ExecutorService service;
+    private HashMap<Page, Integer> stats;
 
     private String pattern  = "dd-M-yyyy hh:mm:ss";
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("pl", "PL"));
@@ -38,6 +41,7 @@ public class Search {
         this.results = FXCollections.observableArrayList();
         this.service = Executors.newCachedThreadPool();
         this.date = simpleDateFormat.format(new Date());
+        this.stats = new HashMap<>();
     }
 
     public ObservableList<Result> getResults() {
@@ -53,10 +57,14 @@ public class Search {
     public void search(){
         for(int i=0; i<pagesToVisit.size(); i++){
             Page page = new Page(pagesToVisit.get(i),depth);
-            service.submit(new Crawler(page, query, results));
+            service.submit(new Crawler(page, query, results, stats));
         }
     }
     public void shutdown(){
         service.shutdownNow();
+    }
+
+    public HashMap<Page, Integer> getDataForDiagram(){
+        return stats;
     }
 }

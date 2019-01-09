@@ -5,11 +5,12 @@
 package WebCrawlerApp.controller;
 
 
-import WebCrawlerApp.controller.pattern.SentencePattern;
 import WebCrawlerApp.model.Page;
 import WebCrawlerApp.model.Query;
 import WebCrawlerApp.model.Result;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,17 +23,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Crawler implements Runnable {
-    private Page page;
+    private Page startPage;
     private ObservableList<Result> results;
     private List<String> pagesToVisit = new ArrayList<>();
     private HashMap<String, Page> pagesVisited = new HashMap<>();
     private Query query;
+    private HashMap<Page, Integer> stats;
 
-    public Crawler(Page startPage, Query query, ObservableList<Result> results) {
+
+    public Crawler(Page startPage, Query query, ObservableList<Result> results, HashMap stats) {
         this.query = query;
-        this.page = startPage;
+        this.startPage = startPage;
         this.results = results;
-        pagesToVisit.add(page.getURL());
+        this.stats = stats;
+        stats.put(startPage,0);
+        pagesToVisit.add(startPage.getURL());
     }
 
     private Document downloadPage(String URL) {
@@ -50,7 +55,7 @@ public class Crawler implements Runnable {
     public void run() {
         List<String> levelURLs = new ArrayList<>();
 
-        for (int i = page.getDepth(); i > 0; i--) {
+        for (int i = startPage.getDepth(); i > 0; i--) {
             while (!pagesToVisit.isEmpty()) {
                 if (!pagesVisited.containsKey(pagesToVisit.get(0))) {
                     Page page = new Page(pagesToVisit.get(0), i);
@@ -69,6 +74,7 @@ public class Crawler implements Runnable {
                     for (String sentence : sentences) {
                         Result result = new Result(page.getURL(), sentence);
                         results.add(result);
+                        stats.replace(startPage,stats.get(startPage)+1);
                     }
                 } else {
                     pagesToVisit.remove(0);
@@ -78,4 +84,6 @@ public class Crawler implements Runnable {
             levelURLs.clear();
         }
     }
+
+
 }

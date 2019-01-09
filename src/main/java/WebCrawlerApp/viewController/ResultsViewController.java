@@ -21,6 +21,7 @@ import java.io.IOException;
 public class ResultsViewController {
     private AppController appController;
     private String searchName;
+    private Search mySearch;
 
     @FXML
     private Label searchNameLabel;
@@ -47,6 +48,7 @@ public class ResultsViewController {
     private Button showDiagramButton;
 
 
+
     @FXML
     public void initialize(){
         searchesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -68,7 +70,8 @@ public class ResultsViewController {
 
     @FXML
     private void handleShowDiagram(ActionEvent event){
-        System.out.println("SHOW DIAGRAM CLICKED");
+        appController.showDiagram(mySearch.getDataForDiagram());
+        //OK mySearch.getDataForDiagram().forEach((K,V)->System.out.format("%s, %d",K.getURL(),V));
     }
 
     public void setAppController(AppController appController) {
@@ -76,10 +79,12 @@ public class ResultsViewController {
     }
 
     public void setData(ObservableList<Search> searches, Search mySearch){
+        this.mySearch = mySearch;
         this.searchName = mySearch.getName();
         searchesTable.setItems(searches);
         searchNameLabel.setText(searchName);
         resultsTable.setItems(mySearch.getResults());
+       // progressInd.progressProperty().bind(mySearch.getProgress());
     }
 
 }

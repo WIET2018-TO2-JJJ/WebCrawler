@@ -31,7 +31,7 @@ public class PageProcessor {
             int index = 0;
             while (bi.next() != BreakIterator.DONE) {
                 String sentence = element.text().substring(index, bi.current());
-                System.out.println("Sentence: " + sentence);
+                //System.out.println("Sentence: " + sentence);
                 sentences.add(sentence);
                 index = bi.current();
             }

@@ -5,11 +5,12 @@
 package WebCrawlerApp.controller;
 
 
-import WebCrawlerApp.controller.pattern.SentencePattern;
 import WebCrawlerApp.model.Page;
 import WebCrawlerApp.model.Query;
 import WebCrawlerApp.model.Result;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,11 +28,15 @@ public class Crawler implements Runnable {
     private List<String> pagesToVisit = new ArrayList<>();
     private HashMap<String, Page> pagesVisited = new HashMap<>();
     private Query query;
+    private HashMap<Page, Integer> stats;
 
-    public Crawler(Page startPage, Query query, ObservableList<Result> results) {
+
+    public Crawler(Page startPage, Query query, ObservableList<Result> results, HashMap stats) {
         this.query = query;
         this.startPage = startPage;
         this.results = results;
+        this.stats = stats;
+        stats.put(startPage,0);
         pagesToVisit.add(startPage.getURL());
     }
 
@@ -67,8 +72,9 @@ public class Crawler implements Runnable {
 
                     List<String> sentences = pageProcessor.searchForWords(doc);
                     for (String sentence : sentences) {
-                        Result result = new Result(page.getURL(),startPage.getURL(), sentence);
+                        Result result = new Result(page.getURL(), sentence);
                         results.add(result);
+                        stats.replace(startPage,stats.get(startPage)+1);
                     }
                 } else {
                     pagesToVisit.remove(0);
@@ -78,4 +84,6 @@ public class Crawler implements Runnable {
             levelURLs.clear();
         }
     }
+
+
 }

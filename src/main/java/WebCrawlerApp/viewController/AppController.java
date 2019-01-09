@@ -6,18 +6,23 @@ package WebCrawlerApp.viewController;
 
 
 import WebCrawlerApp.controller.Spider;
+import WebCrawlerApp.model.Page;
 import WebCrawlerApp.model.Search;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class AppController {
 
@@ -93,6 +98,32 @@ public class AppController {
         controller.setAppController(this);
         controller.setData(searches);
         mainStage.getScene().setRoot(resultsLayout);
+    }
+
+    public void showDiagram(HashMap dataForDiagram){
+        try {
+            // Load the fxml file and create a new stage for the dialog
+            FXMLLoader loader = new FXMLLoader();
+
+            Parent page = loader.load(getClass().getResourceAsStream("/views/DiagramView.fxml"));
+
+            // Create the dialog Stage.
+            Stage diagramStage = new Stage();
+            diagramStage.setTitle("Diagram");
+            diagramStage.initModality(Modality.WINDOW_MODAL);
+            //diagramStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            diagramStage.setScene(scene);
+
+            DiagramViewController controller = loader.getController();
+            controller.setAppController(this);
+            controller.setData(dataForDiagram);
+            diagramStage.show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Stage getPrimaryStage() {

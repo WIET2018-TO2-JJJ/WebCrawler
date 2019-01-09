@@ -8,6 +8,7 @@ package WebCrawlerApp.viewController;
 import WebCrawlerApp.controller.Spider;
 import WebCrawlerApp.model.Page;
 import WebCrawlerApp.model.Search;
+import WebCrawlerApp.session.SessionService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class AppController {
 
@@ -34,7 +36,13 @@ public class AppController {
     public AppController(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.spider = new Spider();
-        this.searches = spider.getSearches();
+        SessionService sessionService = new SessionService();
+        List<Search> oldSearches = sessionService.getAllSearches();
+        searches = FXCollections.observableArrayList(oldSearches);
+        searches.forEach(s -> s.reloadStats());
+        oldSearches.forEach(s -> s.search());
+        spider.setSearches(searches);
+        //this.searches = spider.getSearches();
 
     }
 

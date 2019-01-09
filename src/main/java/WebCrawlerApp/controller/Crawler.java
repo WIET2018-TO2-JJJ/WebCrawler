@@ -28,16 +28,20 @@ public class Crawler implements Runnable {
     private List<String> pagesToVisit = new ArrayList<>();
     private HashMap<String, Page> pagesVisited = new HashMap<>();
     private Query query;
-    private HashMap<Page, Integer> stats;
+    private HashMap<String, Integer> stats;
+    private String baseURL;
 
 
-    public Crawler(Page startPage, Query query, ObservableList<Result> results, HashMap stats) {
+    public Crawler(Page startPage, Query query, ObservableList<Result> results, HashMap<String, Integer> stats) {
         this.query = query;
         this.startPage = startPage;
         this.results = results;
         this.stats = stats;
-        stats.put(startPage,0);
+        this.baseURL = startPage.getURL();
         pagesToVisit.add(startPage.getURL());
+        if(!stats.containsKey(baseURL)){
+            stats.put(baseURL,0);
+        }
     }
 
     private Document downloadPage(String URL) {
@@ -72,9 +76,9 @@ public class Crawler implements Runnable {
 
                     List<String> sentences = pageProcessor.searchForWords(doc);
                     for (String sentence : sentences) {
-                        Result result = new Result(page.getURL(), sentence);
+                        Result result = new Result(page.getURL(), baseURL, sentence);
                         results.add(result);
-                        stats.replace(startPage,stats.get(startPage)+1);
+                        stats.replace(baseURL,stats.get(baseURL)+1);
                     }
                 } else {
                     pagesToVisit.remove(0);

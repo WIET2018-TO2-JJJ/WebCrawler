@@ -26,7 +26,7 @@ import java.util.*;
 
 public class DiagramViewController {
     private AppController appController;
-    private ObservableMap<Page, Integer> stats;
+    private ObservableMap<String, Integer> stats;
 
 
     @FXML
@@ -51,23 +51,23 @@ public class DiagramViewController {
         this.stats = FXCollections.observableMap(dataForDiagram);
         HashMap<String,XYChart.Series> seriesMap = new HashMap<>();
 
-        for(Map.Entry<Page, Integer> entry: stats.entrySet()){
+        for(Map.Entry<String, Integer> stat: stats.entrySet()){
             XYChart.Series series = new XYChart.Series();
-            series.setName(entry.getKey().getURL());
+            series.setName(stat.getKey());
             //System.out.format("%s, %d", entry.getKey().getURL(),entry.getValue());
-            series.getData().add(new XYChart.Data(entry.getKey().getURL(),entry.getValue()));
-            seriesMap.put(entry.getKey().getURL(),series);
+            series.getData().add(new XYChart.Data(stat.getKey(),stat.getValue()));
+            seriesMap.put(stat.getKey(),series);
             bc.getData().add(series);
         }
         Timeline Updater = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                for(Map.Entry<Page, Integer> entry: stats.entrySet()){
-                    XYChart.Series series = seriesMap.get(entry.getKey().getURL());
+                for(Map.Entry<String, Integer> stat: stats.entrySet()){
+                    XYChart.Series series = seriesMap.get(stat.getKey());
                     //series.getData().clear();
-                    series.setName(entry.getKey().getURL());
+                    series.setName(stat.getKey());
                     //System.out.format("%s, %d", entry.getKey().getURL(),entry.getValue());
-                    series.getData().add(new XYChart.Data(entry.getKey().getURL(),entry.getValue()));
+                    series.getData().add(new XYChart.Data(stat.getKey(),stat.getValue()));
                 }
             }
         }));

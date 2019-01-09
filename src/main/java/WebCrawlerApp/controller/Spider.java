@@ -12,11 +12,16 @@ import java.util.List;
 public class Spider {
 
     private ObservableList<Search> searches;
-    //private ObservableList<Search> results;
 
     public Spider(){
-        this.searches = FXCollections.observableArrayList();
-        //this.results = FXCollections.observableArrayList();
+        //this.searches = FXCollections.observableArrayList();
+    }
+    public ObservableList<Search> getSearches() {
+        return searches;
+    }
+
+    public void setSearches(ObservableList<Search> searches) {
+        this.searches = searches;
         searches.addListener(new ListChangeListener<Search>() {
             @Override
             public void onChanged(Change<? extends Search> c) {
@@ -25,8 +30,5 @@ public class Spider {
                 searches.get(searches.size()-1).search();
             }
         });
-    }
-    public ObservableList<Search> getSearches() {
-        return searches;
     }
 }

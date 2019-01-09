@@ -18,6 +18,7 @@ public class Result {
 
     private String resultURL;
     private String resultSentence;
+    private String baseURL;
 
     @Transient
     StringProperty URL;
@@ -26,11 +27,16 @@ public class Result {
 
     public Result(){}
 
-    public Result(String URL, String sentence){
+    public Result(String URL, String baseURL, String sentence){
+        this.baseURL = baseURL;
         this.URL = new SimpleStringProperty(URL);
         this.sentence = new SimpleStringProperty(sentence);
         this.resultURL = URL;
         this.resultSentence = sentence;
+    }
+
+    public String getBaseURL() {
+        return baseURL;
     }
 
     public void setSentence(){

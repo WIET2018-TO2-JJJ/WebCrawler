@@ -6,6 +6,7 @@ package WebCrawlerApp.model;
 
 import WebCrawlerApp.controller.Crawler;
 import WebCrawlerApp.controller.pattern.SentencePattern;
+import WebCrawlerApp.session.SessionService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -30,8 +31,10 @@ public class Search {
     private int searchID;
 
     private String searchName;
+
     @Transient
     private List<String> pagesToVisit;
+
     private Integer depth;
     @OneToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "QUERY_FK")
@@ -47,8 +50,9 @@ public class Search {
     private StringProperty name;
     @Transient
     private ExecutorService service;
+
     @Transient
-    private HashMap<Page, Integer> stats;
+    private HashMap<String, Integer> stats;
 
     @Transient
     private String pattern  = "dd-M-yyyy hh:mm:ss";
@@ -80,6 +84,7 @@ public class Search {
     }
 
     public void addResultsToObservableList(){
+        this.results = FXCollections.observableArrayList();
         for (Result result : resultSet){
             result.setSentence();
             results.add(result);
@@ -116,9 +121,25 @@ public class Search {
     }
     public void shutdown(){
         service.shutdownNow();
+        SessionService sessionService = new SessionService();
+        sessionService.save(this);
     }
 
-    public HashMap<Page, Integer> getDataForDiagram(){
+    public HashMap<String, Integer> getDataForDiagram(){
         return stats;
+    }
+
+    public void reloadStats(){
+        this.stats = new HashMap<>();
+        pagesToVisit = new LinkedList<>();
+        service = Executors.newCachedThreadPool();
+        for(Result result: resultSet){
+            if(stats.containsKey(result.getBaseURL())){
+                stats.replace(result.getBaseURL(),stats.get(result.getBaseURL())+1);
+            } else {
+                stats.put(result.getBaseURL(),0);
+                pagesToVisit.add(result.getBaseURL());
+            }
+        }
     }
 }

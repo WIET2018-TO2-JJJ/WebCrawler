@@ -47,6 +47,7 @@ public class Search {
     private StringProperty name;
     @Transient
     private ExecutorService service;
+    @Transient
     private HashMap<Page, Integer> stats;
 
     @Transient
@@ -72,7 +73,15 @@ public class Search {
 
     public void addResultsToSet(){
         for (Result result : results){
-            resultSet.add(result);
+            if (resultSet.stream().noneMatch((r) -> r.sentence == result.sentence && r.URL == result.URL)){
+                resultSet.add(result);
+            }
+        }
+    }
+
+    public void addResultsToObservableList(){
+        for (Result result : resultSet){
+            results.add(result);
         }
     }
 

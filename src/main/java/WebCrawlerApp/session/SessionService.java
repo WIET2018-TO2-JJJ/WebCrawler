@@ -9,6 +9,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SessionService {
 
@@ -32,11 +33,22 @@ public class SessionService {
         session = sessionFactory.openSession();
         tx = session.beginTransaction();
         search.addResultsToSet();
-        for (Result result : search.getResultSet()){
+        for (Result result : search.getResultSet()) {
             session.save(result);
         }
         session.save(search.getQuery());
         session.save(search);
+        tx.commit();
+        session.close();
+    }
+
+    public void update(Search search){
+        session = sessionFactory.openSession();
+        tx = session.beginTransaction();
+        search.addResultsToSet();
+        for (Result result : search.getResultSet()) {
+            session.save(result);
+        }
         tx.commit();
         session.close();
     }

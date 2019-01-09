@@ -40,6 +40,7 @@ public class AppController {
         List<Search> oldSearches = sessionService.getAllSearches();
         searches = FXCollections.observableArrayList(oldSearches);
         searches.forEach(s -> s.reloadStats());
+        oldSearches.forEach(s -> s.markAsToBeUpdated());
         oldSearches.forEach(s -> s.search());
         spider.setSearches(searches);
         //this.searches = spider.getSearches();

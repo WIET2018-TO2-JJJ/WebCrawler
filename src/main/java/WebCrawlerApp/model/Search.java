@@ -59,6 +59,8 @@ public class Search {
     @Transient
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("pl", "PL"));
     private String date;
+    @Transient
+    private Boolean toBeUpdated = false;
 
     public Search(){}
 
@@ -122,8 +124,13 @@ public class Search {
     public void shutdown(){
         service.shutdownNow();
         SessionService sessionService = new SessionService();
-        sessionService.save(this);
+        if(toBeUpdated){
+            sessionService.update(this);
+        } else {
+            sessionService.save(this);
+        }
     }
+
 
     public HashMap<String, Integer> getDataForDiagram(){
         return stats;
@@ -141,5 +148,9 @@ public class Search {
                 pagesToVisit.add(result.getBaseURL());
             }
         }
+    }
+
+    public void markAsToBeUpdated() {
+        toBeUpdated = true;
     }
 }

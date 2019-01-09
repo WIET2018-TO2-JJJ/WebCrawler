@@ -81,6 +81,7 @@ public class Search {
 
     public void addResultsToObservableList(){
         for (Result result : resultSet){
+            result.setSentence();
             results.add(result);
         }
     }

@@ -40,4 +40,8 @@ public class Query {
         return negativePattern;
     }
 
+    public void setPatterns(){
+        this.negativePattern = new SentencePattern(queryNegative);
+        this.positivePattern = new SentencePattern(queryPositive);
+    }
 }

@@ -33,6 +33,11 @@ public class Result {
         this.resultSentence = sentence;
     }
 
+    public void setSentence(){
+        this.sentence = new SimpleStringProperty(resultSentence);
+        this.URL = new SimpleStringProperty(resultURL);
+    }
+
     public String getSentence() {
         return sentence.getValue();
     }

@@ -48,6 +48,7 @@ public class SessionService {
         for (Search search : searches){
             search.addResultsToObservableList();
             search.setName();
+            search.getQuery().setPatterns();
         }
         tx.commit();
         session.close();

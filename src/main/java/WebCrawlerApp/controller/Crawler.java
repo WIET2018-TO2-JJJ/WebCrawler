@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Crawler implements Runnable {
-    private Page page;
+    private Page startPage;
     private ObservableList<Result> results;
     private List<String> pagesToVisit = new ArrayList<>();
     private HashMap<String, Page> pagesVisited = new HashMap<>();
@@ -30,9 +30,9 @@ public class Crawler implements Runnable {
 
     public Crawler(Page startPage, Query query, ObservableList<Result> results) {
         this.query = query;
-        this.page = startPage;
+        this.startPage = startPage;
         this.results = results;
-        pagesToVisit.add(page.getURL());
+        pagesToVisit.add(startPage.getURL());
     }
 
     private Document downloadPage(String URL) {
@@ -50,7 +50,7 @@ public class Crawler implements Runnable {
     public void run() {
         List<String> levelURLs = new ArrayList<>();
 
-        for (int i = page.getDepth(); i > 0; i--) {
+        for (int i = startPage.getDepth(); i > 0; i--) {
             while (!pagesToVisit.isEmpty()) {
                 if (!pagesVisited.containsKey(pagesToVisit.get(0))) {
                     Page page = new Page(pagesToVisit.get(0), i);
@@ -67,7 +67,7 @@ public class Crawler implements Runnable {
 
                     List<String> sentences = pageProcessor.searchForWords(doc);
                     for (String sentence : sentences) {
-                        Result result = new Result(page.getURL(), sentence);
+                        Result result = new Result(page.getURL(),startPage.getURL(), sentence);
                         results.add(result);
                     }
                 } else {

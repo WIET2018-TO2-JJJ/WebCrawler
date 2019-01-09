@@ -11,24 +11,45 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Entity
 public class Search {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int searchID;
+
+    private String searchName;
+    @Transient
     private List<String> pagesToVisit;
     private Integer depth;
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "QUERY_FK")
     private Query query;
+
+    @OneToMany(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "SEARCH_FK")
+    private Set<Result> resultSet;
+
+    @Transient
     private ObservableList<Result> results;
+    @Transient
     private StringProperty name;
+    @Transient
     private ExecutorService service;
 
+    @Transient
     private String pattern  = "dd-M-yyyy hh:mm:ss";
+    @Transient
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("pl", "PL"));
     private String date;
+
+    public Search(){}
 
     public Search(String name, Query query, Integer acctualDepth, List<String> pagesToVisit) {
         this.name = new SimpleStringProperty(name);
@@ -38,6 +59,14 @@ public class Search {
         this.results = FXCollections.observableArrayList();
         this.service = Executors.newCachedThreadPool();
         this.date = simpleDateFormat.format(new Date());
+        this.searchName = name;
+        resultSet = new HashSet<>();
+    }
+
+    public void addResultsToSet(){
+        for (Result result : results){
+            resultSet.add(result);
+        }
     }
 
     public ObservableList<Result> getResults() {
@@ -48,7 +77,15 @@ public class Search {
         return name;
     }
 
-    public String getName() { return name.getValue(); }
+    public String getName() { return searchName; }
+
+    public int getSearchID(){ return searchID; }
+
+    public Query getQuery() { return query; }
+
+    public Set<Result> getResultSet() {
+        return resultSet;
+    }
 
     public void search(){
         for(int i=0; i<pagesToVisit.size(); i++){

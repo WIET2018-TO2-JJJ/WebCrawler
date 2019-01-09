@@ -85,6 +85,10 @@ public class Search {
         }
     }
 
+    public void setName(){
+        name = new SimpleStringProperty(searchName);
+    }
+
     public ObservableList<Result> getResults() {
         return results;
     }

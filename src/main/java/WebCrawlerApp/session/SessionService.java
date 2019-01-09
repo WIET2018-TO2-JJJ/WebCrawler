@@ -47,6 +47,7 @@ public class SessionService {
         List<Search> searches = session.createCriteria(Search.class).list();
         for (Search search : searches){
             search.addResultsToObservableList();
+            search.setName();
         }
         tx.commit();
         session.close();
